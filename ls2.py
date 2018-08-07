@@ -116,6 +116,3 @@ class ls2_test(unittest.TestCase):
 
     def tearDown(self):
         pass
-
-unittest.main()
-
