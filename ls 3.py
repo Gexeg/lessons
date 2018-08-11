@@ -62,6 +62,7 @@ class DynArray:
         return
 
     def find(self, itm):
+	"""Метод для тестов"""
         for i in range(self.count):
             if self.array[i] == itm:
                 return self.array[i]
