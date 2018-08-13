@@ -57,8 +57,6 @@ class Stack_queue:
     def dequeue(self):
         if self.stack_a.size() == 0:
             return None
-        if self.stack_a.size() == 1:
-            return self.stack_a.pop()
         for i in range(self.stack_a.size() - 1):
             self.stack_b.push(self.stack_a.pop())
         item = self.stack_a.pop()
