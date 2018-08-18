@@ -115,30 +115,30 @@ class OrderedList:
             print(node.value)
             node = node.next
 
-    def find(self, num):
-        """Метод поиска прерывается в случае нахождения """
+    def find(self, value):
+        """Метод поиска прерывается в случае нахождения значения, большего чем искомое"""
         node = self.head
 
         if self.ascending:
-            if num > self.tail.value:
-                print('Max value in list %s' % self.tail)
+            if value > self.tail.value:
+                print('Max value in list %s' % self.tail.value)
                 return None
             else:
                 while node != None:
-                    if  num < node.value:
+                    if  value < node.value:
                         return None
-                    if num == node.value:
+                    if value == node.value:
                         return node
                     node = node.next
         else:
-            if num < self.tail.value:
-                print('Max value in list %s' % self.tail)
+            if value < self.tail.value:
+                print('Min value in list %s' % self.tail.value)
                 return None
             else:
                 while node != None:
-                    if num > node.value:
+                    if value > node.value:
                         return None
-                    if num == node.value:
+                    if value == node.value:
                         return node
                     node = node.next
 
