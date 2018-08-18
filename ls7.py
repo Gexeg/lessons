@@ -215,6 +215,7 @@ list2.add_in_list(123)
 list2.add_in_list(586)
 list2.add_in_list(8937)
 list2.add_in_list(400)
+list2.print_all_nodes()
 
 list3 = ListForString()
 list3.add_in_list('Hey,')
