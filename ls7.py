@@ -125,7 +125,7 @@ class OrderedList:
                 return None
             else:
                 while node != None:
-                    if num < node.value:
+                    if  num < node.value:
                         return None
                     if num == node.value:
                         return node
@@ -215,12 +215,27 @@ list2.add_in_list(123)
 list2.add_in_list(586)
 list2.add_in_list(8937)
 list2.add_in_list(400)
-list2.print_all_nodes()
+
 
 list3 = ListForString()
 list3.add_in_list('Hey,')
 list3.add_in_list('mister')
 list3.add_in_list('!')
 
-print()
-list3.print_all_nodes()
+class ls2_test(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_add_in_list(self):
+        list2.add_in_list(124)
+        self.assertEqual(list2.find(124).value, 124)
+
+    def test_add_in_str_list(self):
+        list3.add_in_list('blah')
+        self.assertEqual(list3.find('blah').value, 'blah')
+
+    def tearDown(self):
+        pass
+
+unittest.main()
