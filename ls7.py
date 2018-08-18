@@ -39,6 +39,7 @@ class OrderedList:
     def add_in_list(self, num):
         """ Вставка значения в зависимости от сортировки листа"""
         node_for_add = Node(num)
+        node = self.head
         if self.head is None:
             self.head = node_for_add
             node_for_add.prev = None
@@ -60,7 +61,6 @@ class OrderedList:
                     node_for_add.prev = None
                     return
                 else:
-                    node = self.head
                     while node != None:
                         if self.compare_values(node.value, num):
                             node_for_add.prev = node.prev
@@ -83,7 +83,6 @@ class OrderedList:
                     node_for_add.prev = None
                     return
                 else:
-                    node = self.head
                     while node != None:
                         if self.compare_values(num, node.value):
                             node_for_add.prev = node.prev
@@ -119,6 +118,7 @@ class OrderedList:
     def find(self, num):
         """Метод поиска прерывается в случае нахождения """
         node = self.head
+
         if self.ascending:
             if num > self.tail.value:
                 print('Max value in list %s' % self.tail)
@@ -157,64 +157,13 @@ class ListForString(OrderedList):
         """ сравнение строк """
         return len(value1.strip()) >= len(value2.strip())
 
-    def add_in_list(self, string):
-        """ метод, позволяющий добавить в упорядоченный список строки"""
-        add_node = Node(string)
-        if self.head == None:
-            self.head = add_node
-            add_node.next = None
-            add_node.prev = None
-            self.tail = add_node
-            return
-        else:
-            if self.ascending == True:
-                if self.compare_values(self.head.value, string):
-                    self.head.prev = add_node
-                    add_node.next = self.head
-                    self.head = add_node
-                    return
-                elif self.compare_values(string, self.tail.value):
-                    self.tail.next = add_node
-                    add_node.prev = self.tail
-                    self.tail = add_node
-                    return
-                node = self.head
-                while node != None:
-                    if self.compare_values(node.value, string):
-                        add_node.prev = node
-                        add_node.next = node.next
-                        node.next.prev = add_node
-                        node.next = add_node
-                        return
-                    node = node.next
-            else:
-                if self.compare_values(string, self.head.value):
-                    self.head.prev = add_node
-                    add_node.next = self.head
-                    self.head = add_node
-                    return
-                elif self.compare_values(self.head.value, string):
-                    self.tail.next = add_node
-                    add_node.prev = self.tail
-                    self.tail = add_node
-                    return
-                node = self.head
-                while node != None:
-                    if self.compare_values(string, node.value) :
-                        add_node.prev = node
-                        add_node.next = node.next
-                        node.next.prev = add_node
-                        node.next = add_node
-                        return
-                    node = node.next
-
-
 list2 = OrderedList()
 list2.add_in_list(123)
 list2.add_in_list(123)
 list2.add_in_list(586)
 list2.add_in_list(8937)
 list2.add_in_list(400)
+list2.add_in_list(8937)
 
 
 list3 = ListForString()
