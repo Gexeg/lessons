@@ -14,35 +14,38 @@ class HashTable:
     def seek_slot(self, value):
         """Метод, находящий свободный слот под значение"""
         slot = self.hash_fun(value)
+        if len(self.full_slots)== self.capacity:
+            return False
         while slot in self.full_slots:
             slot += self.step
-        if slot > self.capacity:
-            return False
+            if slot > self.capacity:
+                slot = (slot+4)%3
         return slot
 
     def put(self, value):
         """Метод, размещающий значение в слоте"""
-        self.array[self.seek_slot(value)] = value
-        self.full_slots.append(self.seek_slot(value))
+        if self.seek_slot(value) is not False:
+            self.array[self.seek_slot(value)] = value
+            self.full_slots.append(self.seek_slot(value))
         return
 
     def find(self, value):
         """ Метод, выдающий слот в таблице для значения"""
         slot = self.hash_fun(value)
+        a = 0
         while slot in self.full_slots:
             if self.array[slot] == value:
                 return slot
             slot += self.step
+            if slot > self.capacity:
+                slot = (slot + 4) % 3
+                a +=1
+                if a == 3:
+                    return False
         return False
 
 h_table = HashTable()
 h_table.put('Hash')
-h_table.put(123)
-h_table.put(123)
-h_table.put(123)
-h_table.put(123)
-h_table.put(123)
-h_table.put(123)
 
 class ls2_test(unittest.TestCase):
 
