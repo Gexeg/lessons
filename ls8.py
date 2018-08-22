@@ -18,7 +18,8 @@ class HashTable:
             return False
         while slot in self.full_slots:
             slot += self.step
-            if slot > self.capacity:
+
+            if slot >= self.capacity:
                 slot = (slot+4)%3
         return slot
 
@@ -37,15 +38,18 @@ class HashTable:
             if self.array[slot] == value:
                 return slot
             slot += self.step
-            if slot > self.capacity:
+            if slot >= self.capacity:
                 slot = (slot + 4) % 3
-                a +=1
+                a += 1
                 if a == 3:
                     return False
-        return False
 
 h_table = HashTable()
-h_table.put('Hash')
+h_table.put("Hash")
+h_table.put("Hash")
+h_table.put("Hash")
+
+
 
 class ls2_test(unittest.TestCase):
 
@@ -54,7 +58,7 @@ class ls2_test(unittest.TestCase):
 
     def test_find(self):
         h_table.put(154)
-        self.assertEqual(h_table.find(154), h_table.hash_fun(154))
+        self.assertEqual(h_table.array[h_table.find(154)],154)
 
     def tearDown(self):
         pass
