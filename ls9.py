@@ -13,7 +13,7 @@ class HashTable:
         return id(value)%19
 
     def seek_slot(self, key):
-        """Метод, находящий свободный слот под значение"""
+        """Метод, находящий свободный слот под ключ"""
         slot = self.hash_fun(key)
         if len(self.full_slots) == self.capacity:
             return False
@@ -24,7 +24,7 @@ class HashTable:
         return slot
 
     def put(self, key, value):
-        """Метод, размещающий значение в слотах"""
+        """Метод, размещающий значение/ключ в слотах"""
         if self.seek_slot(key) is not False:
             self.slots[self.seek_slot(key)] = key
             self.values[self.seek_slot(key)] = value
