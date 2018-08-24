@@ -13,7 +13,6 @@ class PowerSet:
         return id(value) % 19
 
     def seek_slot(self, value):
-        """Метод, находящий свободный слот под значение"""
         slot = self.hash_fun(value)
         if len(self.full_slots) == self.capacity:
             return False
@@ -24,7 +23,6 @@ class PowerSet:
         return slot
 
     def find(self, value):
-        """ Метод, выдающий слот в таблице для значения"""
         slot = self.hash_fun(value)
         a = 0
         while slot in self.full_slots:
@@ -39,7 +37,6 @@ class PowerSet:
         return False
 
     def put(self, value):
-        """Метод, размещающий значение в слоте"""
         if self.find(value) is False:
             if self.seek_slot(value):
                 self.array[self.seek_slot(value)] = value
