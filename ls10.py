@@ -10,19 +10,29 @@ class PowerSet:
         self.full_slots = []
 
     def hash_fun(self, value):
+        if id(value) % 19 == 0:
+            return None
         return id(value) % 19
 
     def seek_slot(self, value):
-        slot = self.hash_fun(value)
+        """Метод, находящий свободный слот под значение"""
+        if  self.hash_fun(value) is None:
+            slot = 0
+        else:
+            slot = self.hash_fun(value)
         if len(self.full_slots) == self.capacity:
             return False
         while slot in self.full_slots:
             slot += self.step
             if slot >= self.capacity:
                 slot = (slot + 1) % self.step
-        return slot
+        if slot == 0:
+            return None
+        else:
+            return slot
 
     def find(self, value):
+        """ Метод, выдающий слот в таблице для значения"""
         slot = self.hash_fun(value)
         a = 0
         while slot in self.full_slots:
@@ -37,6 +47,11 @@ class PowerSet:
         return False
 
     def put(self, value):
+        """Метод, размещающий значение в слоте"""
+        if self.seek_slot(value)is None:
+            self.array[0] = value
+            self.full_slots.append(0)
+            return
         if self.find(value) is False:
             if self.seek_slot(value):
                 self.array[self.seek_slot(value)] = value
@@ -109,7 +124,6 @@ c_set = PowerSet()
 c_set.put('Hash')
 c_set.put('1978')
 
-
 class ls2_test(unittest.TestCase):
 
     def setUp(self):
@@ -144,3 +158,5 @@ class ls2_test(unittest.TestCase):
         pass
 
 unittest.main()
+
+
