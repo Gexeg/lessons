@@ -2,7 +2,6 @@ import unittest
 
 
 class Stack:
-    """Стек работает с первыми элементами списка, а не с последними"""
 
     def __init__(self):
         self.stack = []
