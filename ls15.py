@@ -3,7 +3,6 @@ import ctypes, unittest
 
 class Tree3:
     def __init__(self, value):
-        self.count = 0
         self.capacity = 15
         self.array = (self.capacity * ctypes.py_object)()
         for i in range(self.capacity):
