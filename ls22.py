@@ -1,41 +1,50 @@
-import random
+import random, timeit
 
-class PresortArray:
-    def __init__(self, arr):
-        self.array = arr
-        self.avg = sum(arr)/len(arr)
 
-def array_s(list_in, list_avg):
-    if len(list_in) == 1:
-        return False
-    result = list_in
-    start_i = 0
-    end_i = len(result) - 1
-    while start_i != end_i - 1:
-        if result[start_i] <= list_avg:
-            start_i += 1
-            continue
-        if result[end_i] > list_avg:
-            end_i -= 1
-        result[start_i], result[end_i] = result[end_i], result[start_i]
+def separ(lst, start, end):
+    pos = start
+    ref = lst[start]
+    for i in range(start, end+1):
+        if lst[i] <= ref:
+            lst[i], lst[pos] = lst[pos], lst[i]
+            pos += 1
+    pos -= 1
+    lst[pos], lst[start] = lst[start], lst[pos]
+    return pos
+
+
+def quicksort(lst, start, end):
+    if start < end:
+        pos = separ(lst, start, end)
+        quicksort(lst, start, pos - 1)
+        quicksort(lst, pos + 1, end)
+
+
+def shell_sort(data):
     step = 1
-    while (3 * step) + 1 < len(result):
+    while (3 * step) + 1 < len(data):
         step = (3 * step) +1
     while step > 0:
-        for index in range(1, len(result), step):
-            current_value = result[index]
+        for index in range(1, len(data), step):
+            current_value = data[index]
             position = index
-            while position - step  >= 0 and result[position - step] > current_value:
-                result[position] = result[position - step]
+            while position - step  >= 0 and data[position - step] > current_value:
+                data[position] = data[position - step]
                 position = position - step
-            result[position] = current_value
+            data[position] = current_value
         step = step // 3
-    return result
+    return data
 
-a = []
-for i in range(random.randint(1,5)):
-    a.append(random.randint(0,15))
-a = PresortArray(a)
 
-print(a.array)
-print(array_s(a.array, a.avg))
+big_arr_quicksort = [random.random() for i in range(10000)]
+big_arr_shell = [random.random() for i in range(10000)]
+big_arr_p_sort = [random.random() for i in range(10000)]
+
+t1 = timeit.Timer(lambda: quicksort(big_arr_quicksort, 0, len(big_arr_quicksort)-1)).timeit(number=1)
+t2 = timeit.Timer(lambda: shell_sort(big_arr_shell)).timeit(number=1)
+t3 = timeit.Timer(lambda: big_arr_p_sort.sort()).timeit(number=1)
+
+print('Quicksort time',t1)
+print('Shell sort time',t2)
+print('Standart sort time',t3)
+
