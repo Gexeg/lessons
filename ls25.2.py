@@ -53,6 +53,7 @@ def put_parentheses(formula):
         prior -= 1
         formula = stack
         stack = []
+    print(formula[0])
     return formula[0]
 
 def pars_before_tok(formula):
