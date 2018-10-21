@@ -101,18 +101,24 @@ def put_parentheses(parsed_formula):
 
 def token(arr):
     tokens = []
+    number = ''
     for el in arr:
         tok = ANode()
+        if el in '1234567890':
+            number += el
+        elif number:
+            print(number)
+            number_token = ANode()
+            number_token.token_type = 'число'
+            number_token.token_value = number
+            tokens.append(number_token)
+            number = ''
         if el in '()':
-            tok.token_type = 'Скобка'
+            tok.token_type = 'cкобка'
             tok.token_value = el
             tokens.append(tok)
         elif el in OPERATORS:
             tok.token_type = 'операция'
-            tok.token_value = el
-            tokens.append(tok)
-        else:
-            tok.token_type = 'число'
             tok.token_value = el
             tokens.append(tok)
     return tokens
