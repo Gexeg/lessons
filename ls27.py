@@ -33,13 +33,13 @@ class Blockchain:
         return hash_code
 
     def hash_fun_with_nonce(self, data_for_hashing):
-        nonce = random.randint(0, 100000)
+        nonce = random.random()
         hash_data = (str(data_for_hashing) + str(nonce)).encode('utf-8')
         hash_code = hashlib.md5(hash_data).hexdigest()
         number_of_last_digits = len(self.hash_reference_last_digits)
         attempts_to_form_hash = 1
         while hash_code[-number_of_last_digits:] != self.hash_reference_last_digits:
-            nonce = random.randint(0, 100000)
+            nonce = random.random()
             hash_data = (str(data_for_hashing) + str(nonce)).encode('utf-8')
             hash_code = hashlib.md5(hash_data).hexdigest()
             attempts_to_form_hash += 1
@@ -84,6 +84,7 @@ bitcoin_killer.add_new_block('Hello, chain!')
 bitcoin_killer.add_new_block('blah')
 bitcoin_killer.add_new_block('blah-blah')
 bitcoin_killer.add_new_block('blah-blah-blah')
+bitcoin_killer.add_new_block('blah-blah-blah-blah')
 
 for index in range(len(bitcoin_killer.chain)):
     print(' Данные блока: ',bitcoin_killer.chain[index].data)
