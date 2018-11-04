@@ -1,5 +1,5 @@
 from datetime import datetime
-import hashlib, random
+import hashlib, random, timeit
 
 
 class Block:
@@ -62,7 +62,6 @@ class Blockchain:
 
         self.chain.append(new_block)
         self.attempts_to_form_hash.append(nonce_hash_attempts[2])
-        self.hash_reference_last_digits += '0'
         return current_date
 
     def find_block_by_hash(self, necessary_hash):
@@ -71,25 +70,36 @@ class Blockchain:
                 return block
         return False
 
-    def check_all_chain(self):
+    def find_damaged_block(self):
         for block in self.chain[1:]:
             hash_must_be = self.hash_fun_without_nonce(str(block.previous_block_hash) + str(block.data) + str(block.created_at) + str(block.index) + str(block.nonce))
             if hash_must_be != block.hash:
                 damaged_block = block
                 return damaged_block
-        return True
+
 
 bitcoin_killer = Blockchain('start chain')
-bitcoin_killer.add_new_block('Hello, chain!')
-bitcoin_killer.add_new_block('blah')
-bitcoin_killer.add_new_block('blah-blah')
-bitcoin_killer.add_new_block('blah-blah-blah')
-bitcoin_killer.add_new_block('blah-blah-blah-blah')
+time_for_add_block1 = timeit.Timer(lambda: bitcoin_killer.add_new_block('Hello, chain!')).timeit(number=100)
+bitcoin_killer.hash_reference_last_digits = '00'
+time_for_add_block2 = timeit.Timer(lambda: bitcoin_killer.add_new_block('blah')).timeit(number=100)
+bitcoin_killer.hash_reference_last_digits = '000'
+time_for_add_block3 = timeit.Timer(lambda: bitcoin_killer.add_new_block('blah-blah')).timeit(number=100)
+bitcoin_killer.hash_reference_last_digits = '0000'
+time_for_add_block4 = timeit.Timer(lambda: bitcoin_killer.add_new_block('blah-blah-blah')).timeit(number=100)
+bitcoin_killer.hash_reference_last_digits = '00000'
+time_for_add_block5 = timeit.Timer(lambda: bitcoin_killer.add_new_block('blah-blah-blah-blah')).timeit(number=10)
 
-for index in range(len(bitcoin_killer.chain)):
-    print(' Данные блока: ',bitcoin_killer.chain[index].data)
-    print(' хеш: ', bitcoin_killer.chain[index].hash)
-    print(' Попыток на формирование хеша: ', bitcoin_killer.attempts_to_form_hash[index])
+time_list = [0]
+time_list.append(time_for_add_block1 / 100)
+time_list.append(time_for_add_block2 / 100)
+time_list.append(time_for_add_block3 / 100)
+time_list.append(time_for_add_block4 / 100)
+time_list.append(time_for_add_block5 / 10)
+complexity = ''
+
+for index in range(len(time_list)):
+    print('При сложности',complexity, 'время формирования: ', time_list[index])
     print()
+    complexity += '0'
 
-print(bitcoin_killer.check_all_chain())
+print('Проверка цепи: ', bitcoin_killer.find_damaged_block())
