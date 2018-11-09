@@ -3,11 +3,11 @@ class Neuron:
         self.weight = []
         self.limit = 35
 
-        for elements in range(10):
-            element = []
+        for coefficients in range(10):
+            coefficient = []
             for i in range(10):
-                element.append(0)
-            self.weight.append(element)
+                coefficient.append(0)
+            self.weight.append(coefficient)
 
     def file_check(self):
         file_name = input('Пожалуйста, введите имя файла: ')
