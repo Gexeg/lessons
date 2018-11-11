@@ -88,7 +88,7 @@ class Neuron:
 
 new_neuron = Neuron()
 
-print(new_neuron.training('/home/gex/files_for_task/'), '\n')
+print(new_neuron.training(os.path.abspath('neural_network') + '/files_for_task/'), '\n')
 
 for line_of_coefficients in new_neuron.weight_coefficients:
     print(line_of_coefficients)
