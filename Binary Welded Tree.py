@@ -31,9 +31,7 @@ class TreeBWT:
         root.right_child = TreeNode(root)
         root.right_branch_color = self.colors_for_branches[1]
         nodes_counter = self.tree_nodes_amount - 3
-        queue = []
-        queue.append(root.left_child)
-        queue.append(root.right_child)
+        queue = [root.left_child, root.right_child]
         while nodes_counter != 0:
             current_node = queue.pop()
             current_node.left_child = TreeNode(current_node)
@@ -45,23 +43,13 @@ class TreeBWT:
             nodes_counter -= 2
         return queue
 
-    def connect_two_trees(self, nodes_from_tree_1, nodes_from_tree_2):
-        node_queue = nodes_from_tree_2
-        for future_parent in nodes_from_tree_1:
-            node_for_left_child = node_queue.pop()
-            future_parent.left_child = node_for_left_child
-            node_for_right_child = node_queue.pop()
-            future_parent.right_child = node_for_right_child
-            if node_for_left_child.left_child is None:
-                node_for_left_child.left_child = future_parent
-            else:
-                node_for_left_child.right_child = future_parent
-            if node_for_right_child.left_child is None:
-                node_for_right_child.left_child = future_parent
-            else:
-                node_for_right_child.right_child = future_parent
-            node_queue.insert(0, node_for_left_child)
-            node_queue.insert(0, node_for_right_child)
+    def connect_two_trees(self, first_tree_nodes, second_tree_nodes):
+        """TODO запилить генерацию цвета для подошвы"""
+        for index in range(len(first_tree_nodes)):
+            first_tree_nodes[index].left_child = second_tree_nodes[index]
+            second_tree_nodes[index].left_child = first_tree_nodes[index]
+            first_tree_nodes[index].right_child = second_tree_nodes[index - 1]
+            second_tree_nodes[index - 1].right_child = first_tree_nodes[index]
 
     def generate_random_color_for_node(self, current_node, colors_of_another_tree = None):
         avaliable_colors = set(self.colors_for_branches)
