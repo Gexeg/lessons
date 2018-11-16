@@ -152,5 +152,5 @@ class TreeBWT:
 
 
 new_tree = TreeBWT(3, 4)
-new_tree.build_color_reverse_bwt()
+new_tree.build_bwt()
 new_tree.print_bwt()
