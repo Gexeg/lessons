@@ -51,7 +51,7 @@ class TreeBWT:
             current_node = queue.pop()
             avaliable_colors = list(self.matrix_of_adajency[mirror_node_index].values())
             current_node.left_child = TreeNode(current_node, self.max_node_index + 1)
-            self.max_node_index +=1
+            self.max_node_index += 1
             self.matrix_of_adajency[current_node.index][current_node.left_child.index] = avaliable_colors[1]
             self.matrix_of_adajency[current_node.left_child.index] = {}
             queue.insert(0, current_node.left_child)
@@ -143,14 +143,14 @@ class TreeBWT:
             current_level = next_level
             tree_depth += 1
         while tree_depth > 0:
-            tree_depth -=1
+            tree_depth -= 1
             nodes_by_level = 2**tree_depth
             for node in range(nodes_by_level):
                 current_node = all_revers_tree_nodes.pop()
-                print(current_node.index,self.matrix_of_adajency[current_node.index], end=' --  ')
+                print(current_node.index, self.matrix_of_adajency[current_node.index], end=' --  ')
             print()
 
 
-new_tree = TreeBWT(3, 4)
+new_tree = TreeBWT(5, 4)
 new_tree.build_color_reverse_bwt()
 new_tree.print_bwt()
