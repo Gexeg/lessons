@@ -32,8 +32,9 @@ class LinkedList:
             if node.value == val:
                 return node
             node = node.next
-        if self.tail.value == val:
-            return val
+        if self.tail:
+            if self.tail.value == val:
+                return val
         return False
 
     def find_all(self, val):
@@ -43,8 +44,9 @@ class LinkedList:
             if node.value == val:
                 node_list.append(node)
             node = node.next
-        if self.tail.value == val:
-            node_list.append(self.tail)
+        if self.tail:
+            if self.tail.value == val:
+                node_list.append(self.tail)
         return node_list
 
     def delete(self, val, all = False):
@@ -67,7 +69,10 @@ class LinkedList:
                 previos_node = node
                 node = node.next
             if self.tail.value == val:
-                self.tail = previos_node
+                if self.head:
+                    self.tail = previos_node
+                else:
+                    self.tail = None
 
     def clean(self):
         node = self.head
