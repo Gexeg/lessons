@@ -47,19 +47,9 @@ class LinkedList:
         node = self.head
         started = True
         if all:
-            while node is not None:
-                if started:
-                    if node.value == val:
-                        self.head = node.next
-                    started = False
-                    previos_node = node
-                if node.value == val:
-                    previos_node.next = node.next
-                    node = self.head
-                    continue
-                previos_node = node
-                node = node.next
-            self.delete(val)
+            while self.find(val) or self.tail.value == val:
+                self.delete(val)
+                self.delete(val, True)
         else:
             while node is not None:
                 if started == True:
@@ -108,3 +98,24 @@ class LinkedList:
                 return True
             node = node.next
         return False
+
+s_list = LinkedList()
+s_list.add_in_tail(Node(125))
+s_list.add_in_tail(Node(125))
+s_list.add_in_tail(Node(12))
+s_list.add_in_tail(Node(125))
+s_list.add_in_tail(Node(55))
+s_list.add_in_tail(Node(125))
+s_list.add_in_tail(Node(125))
+s_list.add_in_tail(Node(12))
+s_list.add_in_tail(Node(128))
+s_list.add_in_tail(Node(125))
+s_list.add_in_tail(Node(125))
+
+
+
+s_list.delete(125, True)
+
+s_list.print_all_nodes()
+print()
+print(s_list.tail.value)
