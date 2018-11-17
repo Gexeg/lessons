@@ -57,7 +57,7 @@ class LinkedList:
                     previos_node.next = node.next
                 previos_node = node
                 node = node.next
-            self.find_and_del(val)
+            self.delete(val)
         while node is not None:
             if started== True:
                 if node.value == val:
@@ -103,4 +103,3 @@ class LinkedList:
                 return True
             node = node.next
         return False
-
