@@ -58,18 +58,21 @@ class LinkedList:
                 previos_node = node
                 node = node.next
             self.delete(val)
-        while node is not None:
-            if started== True:
+        else:
+            while node is not None:
+                if started == True:
+                    if node.value == val:
+                        self.head = node.next
+                        return
+                    started = False
+                    previos_node = node
                 if node.value == val:
-                    self.head = node.next
+                    previos_node.next = node.next
                     return
-                started = False
                 previos_node = node
-            if node.value == val:
-                previos_node.next = node.next
-                return
-            previos_node = node
-            node = node.next
+                node = node.next
+            if self.tail.value == val:
+                self.tail = previos_node
 
     def clean(self):
         node = self.head
