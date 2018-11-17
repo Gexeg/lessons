@@ -103,8 +103,3 @@ class LinkedList:
                 return True
             node = node.next
         return False
-
-s_list = LinkedList()
-s_list.add_in_tail(Node(12))
-
-print(s_list.find_all(12))
