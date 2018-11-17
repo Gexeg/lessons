@@ -35,7 +35,7 @@ class LinkedList:
         if self.tail:
             if self.tail.value == val:
                 return val
-        return False
+        return None
 
     def find_all(self, val):
         node = self.head
