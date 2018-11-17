@@ -55,6 +55,8 @@ class LinkedList:
                     previos_node = node
                 if node.value == val:
                     previos_node.next = node.next
+                    node = self.head
+                    continue
                 previos_node = node
                 node = node.next
             self.delete(val)
