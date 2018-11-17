@@ -101,28 +101,3 @@ class LinkedList:
                 return True
             node = node.next
         return False
-
-s_list = LinkedList()
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(55))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(128))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-s_list.add_in_tail(Node(125))
-
-s_list.delete(125, True)
-
-s_list.print_all_nodes()
-print()
-
-print(s_list.head.value)
-print(s_list.tail.value)
