@@ -32,7 +32,10 @@ class LinkedList:
             if node.value == val:
                 return node
             node = node.next
-        return None
+        if self.tail:
+            if self.tail.value == val:
+                return val
+        return False
 
     def find_all(self, val):
         node = self.head
@@ -100,3 +103,8 @@ class LinkedList:
                 return True
             node = node.next
         return False
+
+s_list = LinkedList()
+s_list.add_in_tail(Node(12))
+
+print(s_list.find_all(12))
