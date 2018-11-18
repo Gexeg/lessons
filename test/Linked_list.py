@@ -58,7 +58,7 @@ class LinkedList:
             while node is not None:
                 if started == True:
                     if node.value == val:
-                        if self.len() == 1:
+                        if self.len() <= 1:
                             self.clean()
                             return
                         self.head = node.next
@@ -70,11 +70,12 @@ class LinkedList:
                     return
                 previos_node = node
                 node = node.next
-            if self.tail.value == val:
-                if self.head:
-                    self.tail = previos_node
-                else:
-                    self.tail = None
+            if self.tail:
+                if self.tail.value == val:
+                    if self.head:
+                        self.tail = previos_node
+                    else:
+                        self.tail = None
 
     def clean(self):
         node = self.head
@@ -108,94 +109,3 @@ class LinkedList:
                 return True
             node = node.next
         return False
-
-
-class ls2_test(unittest.TestCase):
-
-    def setUp(self):
-        pass
-
-    def test_delete_all_nodes(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.delete(125, True)
-        self.assertEqual(s_list.find(125), None)
-        self.assertEqual(s_list.print_all_nodes(), None)
-        self.assertEqual(s_list.tail, None)
-        self.assertEqual(s_list.head, None)
-
-    def test_delete_all_nodes_in_one_element_list(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(125))
-        s_list.delete(125, True)
-        self.assertEqual(s_list.find(125), None)
-        self.assertEqual(s_list.tail, None)
-        self.assertEqual(s_list.head, None)
-
-    def test_delete_all_various_nodes(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(45))
-        s_list.add_in_tail(Node(165))
-        s_list.add_in_tail(Node(155))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(12))
-        s_list.add_in_tail(Node(125))
-        s_list.add_in_tail(Node(125))
-        s_list.delete(125, True)
-        self.assertEqual(s_list.find(125), None)
-        self.assertEqual(s_list.head.value, 45)
-        self.assertEqual(s_list.tail.value, 12)
-
-    def test_delete_all_various_nodes_one_head(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(175))
-        s_list.add_in_tail(Node(125))
-        s_list.delete(125, True)
-        self.assertEqual(s_list.tail.value, 175)
-        self.assertEqual(s_list.head.value, 175)
-
-    def test_delete_node_single_node(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(175))
-        s_list.delete(175)
-        self.assertEqual(s_list.find(175), None)
-        self.assertEqual(s_list.head, None)
-        self.assertEqual(s_list.tail, None)
-
-    def test_delete_node(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(175))
-        s_list.add_in_tail(Node(175))
-        s_list.add_in_tail(Node(175))
-        s_list.add_in_tail(Node(175))
-        s_list.delete(175)
-        self.assertEqual(len(s_list.find_all(175)), 3)
-
-    def test_find(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(125))
-        self.assertEqual(s_list.find(125), s_list.tail)
-
-    def test_find_none(self):
-        s_list = LinkedList()
-        self.assertEqual(s_list.find(125), None)
-
-    def test_insert(self):
-        s_list = LinkedList()
-        s_list.add_in_tail(Node(175))
-        s_list.insert(175, 125)
-        self.assertEqual(s_list.find(125).value, 125)
-
-    def tearDown(self):
-        pass
-
-
-unittest.main()
