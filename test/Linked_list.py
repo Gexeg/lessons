@@ -99,17 +99,15 @@ class LinkedList:
             node = node.next
         return lenght
 
-    def insert(self, val, node_val):
+    def insert(self, afterNode, new_node):
         node = self.head
-        node_for_paste = Node(node_val)
-        if val is None:
+        if afterNode is None:
             if self.len() == 0:
-                self.add_in_tail(node_for_paste)
+                self.add_in_tail(new_node)
         while node is not None:
-            if node.value == val:
-                node_for_paste.next = node.next
-                node.next = node_for_paste
+            if node == afterNode:
+                new_node.next = node.next
+                node.next = new_node
                 return True
             node = node.next
         return False
-
