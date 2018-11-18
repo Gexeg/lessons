@@ -6,11 +6,6 @@ class FileOperations:
     def __init__(self, files_storage_structure):
         self.files_storage = files_storage_structure
 
-    def fill_storage(self, number_of_files):
-        """Метод, наполняющий хранилище файлами, заполненными случайными числами"""
-        for file in range(number_of_files):
-            self.create_file()
-
     def summ_from_random_files(self):
         """метод, выбирающий 2 случайных файла из списка доступных. Перед выполнением с помощью
         методов класса-исключения проводятся проверки на наполненность хранилища и корректность файлов"""
@@ -26,6 +21,11 @@ class FileOperations:
                     for line in second_file:
                         sum = sum + int(line)
                     return sum
+
+    def fill_storage(self, number_of_files):
+        """Метод, наполняющий хранилище файлами, заполненными случайными числами"""
+        for file in range(number_of_files):
+            self.create_file()
 
     def create_file(self):
         file_name = len(self.files_storage.file_names_with_path)
