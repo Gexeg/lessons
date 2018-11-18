@@ -1,3 +1,5 @@
+import unittest
+
 class Node:
     def __init__(self, v):
         self.value = v
@@ -56,6 +58,9 @@ class LinkedList:
             while node is not None:
                 if started == True:
                     if node.value == val:
+                        if self.len() == 1:
+                            self.clean()
+                            return
                         self.head = node.next
                         return
                     started = False

@@ -26,11 +26,6 @@ class TreeBWT:
         second_tree_nodes = self.build_tree()
         self.connect_two_trees(first_tree_nodes, second_tree_nodes)
 
-    def build_color_reverse_bwt(self):
-        first_tree_nodes = self.build_tree()
-        second_tree_nodes = self.build_color_reverse_tree()
-        self.connect_two_trees(first_tree_nodes, second_tree_nodes)
-
     def build_tree(self):
         queue = [self.create_root_node()]
         node_amount = self.node_amount - 1
@@ -42,6 +37,11 @@ class TreeBWT:
             queue.insert(0, current_node.right_child)
             node_amount -= 2
         return queue
+
+    def build_color_reverse_bwt(self):
+        first_tree_nodes = self.build_tree()
+        second_tree_nodes = self.build_color_reverse_tree()
+        self.connect_two_trees(first_tree_nodes, second_tree_nodes)
 
     def build_color_reverse_tree(self):
         queue = [self.create_root_node()]
