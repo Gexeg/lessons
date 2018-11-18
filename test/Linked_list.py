@@ -104,6 +104,7 @@ class LinkedList:
         if afterNode is None:
             if self.len() == 0:
                 self.add_in_tail(new_node)
+                return True
         while node is not None:
             if node == afterNode:
                 new_node.next = node.next
@@ -111,4 +112,3 @@ class LinkedList:
                 return True
             node = node.next
         return False
-
