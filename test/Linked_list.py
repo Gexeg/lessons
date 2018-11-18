@@ -36,7 +36,7 @@ class LinkedList:
             node = node.next
         if self.tail:
             if self.tail.value == val:
-                return val
+                return self.tail
         return None
 
     def find_all(self, val):
@@ -111,3 +111,4 @@ class LinkedList:
                 return True
             node = node.next
         return False
+
