@@ -109,6 +109,11 @@ class LinkedList:
             if node == afterNode:
                 new_node.next = node.next
                 node.next = new_node
+                if self.tail:
+                    if self.tail == afterNode:
+                        new_node.next = None
+                        self.tail.next = new_node
+                        self.tail = new_node
                 return True
             node = node.next
         return False
