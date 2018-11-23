@@ -17,6 +17,7 @@ class TreeBWT:
         self.colors_for_branches = set()
         for color in range(colors_amount):
             self.colors_for_branches.add(color)
+        self.depth = depth
         self.node_amount = 0
         for level in range(depth):
             self.node_amount += 2 ** level

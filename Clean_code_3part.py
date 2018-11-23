@@ -41,6 +41,9 @@ class FileOperations:
     def choose_random_file(self):
         return self.files_storage.file_names_with_path[randint(0, len(self.files_storage.file_names_with_path))]
 
+    def change_storage(self, new_storage):
+        self.files_storage = new_storage
+
 
 class FilesStorage:
     def __init__(self, absolute_path):
@@ -60,7 +63,6 @@ class Storage_exceptions:
 
     def check_file(self, file_name):
         try:
-            print(file_name)
             with open(str(file_name), 'r') as file:
                 for line in file:
                     if int(line):
