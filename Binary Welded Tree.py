@@ -14,13 +14,11 @@ class TreeBWT:
         self.roots = []
         self.matrix_of_adajency = {}
         self.max_node_index = 0
-        self.colors_for_branches = set()
-        for color in range(colors_amount):
-            self.colors_for_branches.add(color)
-        self.depth = depth
-        self.node_amount = 0
-        for level in range(depth):
-            self.node_amount += 2 ** level
+        self.colors_for_branches = set(['red','blue','green','yellow'])
+        #for color in range(colors_amount):
+        #    self.colors_for_branches.add(color)
+        self.single_tree_depth = depth
+        self.node_amount = 2 ** depth - 1
 
     def build_bwt(self):
         first_tree_nodes = self.build_tree()
@@ -118,40 +116,121 @@ class TreeBWT:
 
     def print_firtst_tree(self):
         current_level = [self.roots[0]]
-        current_node_index = 0
-        while current_node_index < self.node_amount:
+        node_counter = 0
+        while node_counter < self.node_amount:
             next_level = []
             for node in current_level:
                 print(node.index, self.matrix_of_adajency[node.index], end=' --  ')
                 next_level.append(node.left_child)
                 next_level.append(node.right_child)
-                current_node_index += 1
+                node_counter += 1
             print()
             current_level = next_level
 
     def print_reverse_tree(self):
         current_level = [self.roots[1]]
-        current_node_index = 0
+        node_counter = 0
         tree_depth = 0
         all_revers_tree_nodes = []
-        while current_node_index < self.node_amount:
+        while node_counter < self.node_amount:
             next_level = []
             for node in current_level:
                 all_revers_tree_nodes.append(node)
                 next_level.append(node.left_child)
                 next_level.append(node.right_child)
-                current_node_index += 1
+                node_counter += 1
             current_level = next_level
             tree_depth += 1
         while tree_depth > 0:
             tree_depth -= 1
             nodes_by_level = 2**tree_depth
             for node in range(nodes_by_level):
-                current_node = all_revers_tree_nodes.pop()
-                print(current_node.index, self.matrix_of_adajency[current_node.index], end=' --  ')
+                node_counter = all_revers_tree_nodes.pop()
+                print(node_counter.index, self.matrix_of_adajency[node_counter.index], end=' --  ')
             print()
 
+    def find_way_vertex_to_vertex(self, color):
+        first_way = self.find_way_vertex_to_foot(self.roots[0])
+        second_way = self.find_way_vertex_to_foot(self.roots[1])
+        all_ways = self.combine_ways(first_way, second_way)
+        colored_ways = self.add_colors(all_ways)
+        desired_way = self.choose_best_way(colored_ways, color)
+        return colored_ways, desired_way
+
+    def find_way_vertex_to_foot(self, root):
+        parents = {}
+        node_counter = 0
+        current_node_index = root.index
+        for node in range(self.node_amount):
+            for child in self.matrix_of_adajency[current_node_index]:
+                parents[child] = current_node_index
+            node_counter += 1
+            current_node_index += 1
+        foot_nodes_indexes = []
+        last_index = root.index + self.node_amount - 1
+        for node_index in range(2**(self.single_tree_depth-1)):
+            foot_nodes_indexes.append(last_index)
+            last_index -= 1
+        ways = []
+        for node in foot_nodes_indexes:
+            path = []
+            path.append(node)
+            while True:
+                if parents.get(node) is None:
+                    path.reverse()
+                    ways.append(path)
+                    break
+                path.append(parents.get(node))
+                node = parents.get(node)
+        return ways
+
+    def combine_ways(self, first_ways, second_ways):
+        combined_ways = []
+        for path in first_ways:
+            first_foot_node_index = path[-1]
+            first_foot_node_child_indexes = list(self.matrix_of_adajency[first_foot_node_index].keys())
+            for path_2 in second_ways:
+                second_foot_node_index = path_2[-1]
+                if second_foot_node_index in first_foot_node_child_indexes:
+                    first_path = list(path)
+                    second_path = list(path_2)
+                    second_path.reverse()
+                    first_path.extend(second_path)
+                    combined_ways.append(first_path)
+        return combined_ways
+
+    def add_colors(self, ways):
+        ways_with_color = []
+        for path in ways:
+            branches_color = []
+            for node_index in range(self.single_tree_depth):
+                branches_color.append(self.matrix_of_adajency[path[node_index]][path[node_index + 1]])
+            second_tree_nodes = list(path[self.single_tree_depth:])
+            second_tree_nodes.reverse()
+            second_tree_branches_color = []
+            for node_index in range(self.single_tree_depth-1):
+                second_tree_branches_color.append(self.matrix_of_adajency[second_tree_nodes[node_index]][second_tree_nodes[node_index + 1]])
+            second_tree_branches_color.reverse()
+            branches_color.extend(second_tree_branches_color)
+            ways_with_color.append((path,branches_color))
+        return ways_with_color
+
+    def choose_best_way(self, ways, desired_color):
+        count_desired_colors = []
+        for path_and_colors in ways:
+            color_counter = 0
+            for color in path_and_colors[1]:
+                if color == desired_color:
+                    color_counter +=1
+            count_desired_colors.append(color_counter)
+        return ways[count_desired_colors.index(min(count_desired_colors))]
 
 new_tree = TreeBWT(3, 4)
 new_tree.build_bwt()
 new_tree.print_bwt()
+print()
+a = new_tree.find_way_vertex_to_vertex('green')
+print(a[1])
+print()
+for i in a[0]:
+    print(i)
