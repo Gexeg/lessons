@@ -1,10 +1,15 @@
+import unittest
+
 class Node:
     def __init__(self, v):
         self.value = v
         self.next = None
+
     def description(self):
         print(self.value)
         print(self.next)
+
+
 class LinkedList:
     def __init__(self):
         self.head = None
@@ -29,46 +34,50 @@ class LinkedList:
             if node.value == val:
                 return node
             node = node.next
+        if self.tail:
+            if self.tail.value == val:
+                return self.tail
         return None
 
-    def find_and_del(self, val):
-        """Задание номер 1 метод для поиска и удаления узла по значению"""
+    def find_all(self, val):
+        node = self.head
+        node_list = []
+        while node is not None:
+            if node.value == val:
+                node_list.append(node)
+            node = node.next
+        return node_list
+
+    def delete(self, val, all = False):
         node = self.head
         started = True
-        while node is not None:
-            if started== True:
+        if all:
+            while self.find(val):
+                self.delete(val)
+        else:
+            while node is not None:
+                if started == True:
+                    if node.value == val:
+                        if self.len() <= 1:
+                            self.clean()
+                            return
+                        self.head = node.next
+                        return
+                    started = False
+                    previos_node = node
                 if node.value == val:
-                    self.head = node.next
+                    previos_node.next = node.next
                     return
-                started = False
                 previos_node = node
-            if node.value == val:
-                previos_node.next = node.next
-                return
-            previos_node = node
-            node = node.next
-        return 'Узел не найден'
-
-    def find_all_and_del(self, val):
-        """Задание номер 2 метод для поиска и удаления всех узлов по значению"""
-        node = self.head
-        started = True
-        while node is not None:
-            if started:
-                if node.value == val:
-                    self.head = node.next
-                started = False
-                previos_node = node
-            if node.value == val:
-                previos_node.next = node.next
-            previos_node = node
-            node = node.next
-        self.find_and_del(val)
-        return
-
+                node = node.next
+            if self.tail:
+                if self.tail.value == val:
+                    if self.head:
+                        self.tail = previos_node
+                    else:
+                        self.tail = None
 
     def clean(self):
-        """Задание номер 3 метод для очистки списка"""
         node = self.head
         started = True
         while node is not None:
@@ -82,18 +91,7 @@ class LinkedList:
         self.tail = None
         return None
 
-    def find_all(self, val):
-        """Задание номер 4 метод для поиска всех узлов по значению"""
-        node = self.head
-        node_list = []
-        while node is not None:
-            if node.value == val:
-                node_list.append(node)
-            node = node.next
-        return node_list
-
     def len(self):
-        """Задание номер 5 метод для измерения длины списка"""
         node = self.head
         lenght = 0
         while node is not None:
@@ -101,96 +99,144 @@ class LinkedList:
             node = node.next
         return lenght
 
-    def find_and_paste(self, val, node_val):
-        """Задание номер 6 метод для помещения узла после заданного узла"""
+    def insert(self, afterNode, new_node):
         node = self.head
-        node_for_paste = Node(node_val)
+        if afterNode is None:
+            if self.len() == 0:
+                self.add_in_tail(new_node)
+                return True
         while node is not None:
-            if node.value == val:
-                node_for_paste.next = node.next
-                node.next = node_for_paste
-                return
+            if node == afterNode:
+                new_node.next = node.next
+                node.next = new_node
+                if self.tail:
+                    if self.tail == afterNode:
+                        new_node.next = None
+                        self.tail.next = new_node
+                        self.tail = new_node
+                return True
             node = node.next
-        return 'Узел не найден'
-
-s_list = LinkedList()
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(55))
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(128))
-s_list.add_in_tail(Node(125))
-
-a_list = LinkedList()
-a_list.add_in_tail(Node(20))
-a_list.add_in_tail(Node(20))
-a_list.add_in_tail(Node(20))
-a_list.add_in_tail(Node(20))
-a_list.add_in_tail(Node(20))
-
-def summ_list_if(list1, list2):
-    """Задание номер 7 На входе 2 списка. Если их длины идентичны, то функция возвращает список, каждый элемент которого равен сумме элементов входных списков"""
-    new_list = LinkedList()
-    if list1.len() == list2.len():
-        node_1 = list1.head
-        node_2 = list2.head
-        while node_1 is not None:
-            new_node = Node(node_1.value + node_2.value)
-            new_list.add_in_tail(new_node)
-            node_1 = node_1.next
-            node_2 = node_2.next
-        return new_list
-    else:
-        new_list.add_in_tail(Node('Что-то тут не так'))
-        return new_list
+        return False
 
 
+class ls2_test(unittest.TestCase):
 
-# Тест для первого задания
-s_list.find_and_del(55)
-if s_list.find(55) is None:
-    print('Узел удален')
+    def setUp(self):
+        pass
 
-s_list.add_in_tail(Node(55))
+    def test_delete_all_nodes(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.delete(125, True)
+        self.assertEqual(s_list.find(125), None)
+        self.assertEqual(s_list.print_all_nodes(), None)
+        self.assertEqual(s_list.tail, None)
+        self.assertEqual(s_list.head, None)
 
-s_list.print_all_nodes()
-print()
+    def test_delete_all_nodes_in_one_element_list(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(125))
+        s_list.delete(125, True)
+        self.assertEqual(s_list.find(125), None)
+        self.assertEqual(s_list.tail, None)
+        self.assertEqual(s_list.head, None)
 
-# Тест для второго задания
-s_list.find_all_and_del(12)
-if s_list.find(12) is None:
-    print('Узлы удалены')
+    def test_delete_all_various_nodes(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(45))
+        s_list.add_in_tail(Node(165))
+        s_list.add_in_tail(Node(155))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(12))
+        s_list.add_in_tail(Node(125))
+        s_list.add_in_tail(Node(125))
+        s_list.delete(125, True)
+        self.assertEqual(s_list.find(125), None)
+        self.assertEqual(s_list.head.value, 45)
+        self.assertEqual(s_list.tail.value, 12)
 
-s_list.print_all_nodes()
-print()
+    def test_delete_all_various_nodes_one_head(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(175))
+        s_list.add_in_tail(Node(125))
+        s_list.delete(125, True)
+        self.assertEqual(s_list.tail.value, 175)
+        self.assertEqual(s_list.head.value, 175)
 
-# Тест для третьего задания
-s_list.clean()
-if s_list.head is None and s_list.tail is None:
-    print('List clean')
+    def test_delete_node_single_node(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(175))
+        s_list.delete(175)
+        self.assertEqual(s_list.find(175), None)
+        self.assertEqual(s_list.head, None)
+        self.assertEqual(s_list.tail, None)
 
-s_list = LinkedList()
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(55))
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(128))
+    def test_delete_node(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(175))
+        s_list.add_in_tail(Node(175))
+        s_list.add_in_tail(Node(175))
+        s_list.add_in_tail(Node(175))
+        s_list.delete(175)
+        self.assertEqual(len(s_list.find_all(175)), 3)
 
-# Тест для 4 задания
-if len(s_list.find_all(12)) == 2:
-    print('4 Working')
+    def test_delete_node_empty_list(self):
+        s_list = LinkedList()
+        s_list.delete(175)
+        self.assertEqual(len(s_list.find_all(175)), 0)
 
-# Тест для 5 задания
-if s_list.len() == 4:
-    print('5 Working')
 
-# Тест для 6 задания
-s_list.find_and_paste(55, 125)
-if s_list.find(125) is not None:
-    print('6 Working')
+    def test_find(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(125))
+        self.assertEqual(s_list.find(125), s_list.tail)
 
-s_list.print_all_nodes()
-print()
+    def test_find_none(self):
+        s_list = LinkedList()
+        self.assertEqual(s_list.find(125), None)
 
-# Тест для 7 задания
-sum_list = summ_list_if(s_list, a_list)
-if sum_list.len() == 5 and sum_list.find(145) is not None:
-    print('7 Working')
+    def test_insert(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(175))
+        self.assertEqual(s_list.insert(s_list.find(175), Node(125)), True)
+        self.assertEqual(s_list.find(125).value, 125)
+        self.assertEqual(s_list.tail.value, 125)
+
+    def test_insert_3(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(145))
+        s_list.add_in_tail(Node(155))
+        s_list.add_in_tail(Node(175))
+        self.assertEqual(s_list.insert(s_list.find(175), Node(125)), True)
+        self.assertEqual(s_list.find(125).value, 125)
+        self.assertEqual(s_list.tail.value, 125)
+
+    def test_insert_2(self):
+        s_list = LinkedList()
+        s_list.add_in_tail(Node(5))
+        self.assertEqual(s_list.insert(s_list.find(175), Node(125)), False)
+
+    def test_insert_empty_list(self):
+        s_list = LinkedList()
+        self.assertEqual(s_list.insert(None, Node(125)), True)
+        self.assertEqual(s_list.find(125).value, 125)
+
+
+    def test_insert_empty_list_2(self):
+        s_list = LinkedList()
+        self.assertEqual(s_list.insert(175, 125), False)
+
+    def tearDown(self):
+        pass
+
+
+unittest.main()
+
