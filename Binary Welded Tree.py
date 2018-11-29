@@ -4,7 +4,7 @@ class WanderingNode:
     def __init__(self, parent_node):
         self.location = parent_node
 
-    def step(self):
+    def step(self, ):
         if self.location.parent:
             possible_directions = set(['parent','left_child','right_child'])
             direction = random.sample(possible_directions, 1)[0]
@@ -244,40 +244,41 @@ class TreeBWT:
         if desired_index > self.node_amount*2:
             return False
         searching_node = WanderingNode(self.roots[0])
+        steps = 0
         while True:
+            steps += 1
             searching_node.step()
             if searching_node.location.index == desired_index:
-                return searching_node.location, searching_node.location.index
+                return steps, searching_node.location, searching_node.location.index
 
     def find_node_by_quantum_random_movements(self, desired_index):
         if desired_index > self.node_amount*2:
             return False
         searching_swarm = [WanderingNode(self.roots[0])]
+        steps = 0
         while len(searching_swarm) < 100000:
-            for node in searching_swarm:
-                new_searching_node = WanderingNode(node.location)
-                searching_swarm.append(new_searching_node)
-                node.step()
-                if node.location.index == desired_index:
-                    return node.location, node.location.index, len(searching_swarm)
+            steps += 1
+            for node_index in range(len(searching_swarm)):
+                new_searching_node = WanderingNode(searching_swarm[node_index].location)
+                searching_swarm[node_index].step()
+                if searching_swarm[node_index].location.index == desired_index:
+                    return steps, searching_swarm[node_index].location, searching_swarm[node_index].location.index, len(searching_swarm)
+                current_locations = []
+                for unit in searching_swarm:
+                    current_locations.append(unit.location)
                 new_searching_node.step()
                 if new_searching_node.location.index == desired_index:
-                    return new_searching_node.location, new_searching_node.location.index, len(searching_swarm)
+                    return steps, new_searching_node.location, new_searching_node.location.index, len(searching_swarm)
+                if new_searching_node.location not in current_locations:
+                    searching_swarm.append(new_searching_node)
 
 
-new_tree = TreeBWT(10)
+new_tree = TreeBWT(4)
 new_tree.build_color_reverse_bwt()
 new_tree.print_bwt()
 print()
-find_way = new_tree.find_way_vertex_to_vertex('green')
-print(find_way[1])
-
-time_for_find_element = timeit.Timer(lambda: new_tree.find_node_by_random_movements(random.randint(1, new_tree.node_amount*2))).timeit(number=100)
-time_for_find_element2 = timeit.Timer(lambda: new_tree.find_node_by_quantum_random_movements(random.randint(1, new_tree.node_amount*2))).timeit(number=100)
-
-time_list = []
-time_list.append(time_for_find_element / 100)
-time_list.append(time_for_find_element2 / 100)
-
-print('Время нахождения узла с помощью алгоритма блуждания: ', time_list[0])
-print('Время нахождения узла с помощью квантовой реализации алгоритма блуждания: ', time_list[1])
+print('Найти необходимый элемент по индексу')
+random_movement = new_tree.find_node_by_random_movements(16)
+print('Случайные блуждания. Цикл алгоритма: ', random_movement[0])
+quantum_random_movement = new_tree.find_node_by_quantum_random_movements(16)
+print('Квантовая версия случайных блужданий. Цикл алгоритма: ',quantum_random_movement[0],' количество объектов:', quantum_random_movement[3])
