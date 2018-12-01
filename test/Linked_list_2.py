@@ -250,5 +250,12 @@ class ls2_test(unittest.TestCase):
         self.assertEqual(s_list.find(175).value, 175)
         self.assertEqual(s_list.head.value, 175)
 
+    def test_add_in_head_empty_list(self):
+        s_list = LinkedList2()
+        s_list.add_in_head(Node(175))
+        self.assertEqual(s_list.find(175).value, 175)
+        self.assertEqual(s_list.head.value, 175)
+        self.assertEqual(s_list.tail.value, 175)
+
     def tearDown(self):
         pass
