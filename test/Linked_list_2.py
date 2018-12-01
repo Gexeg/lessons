@@ -104,8 +104,8 @@ class LinkedList2:
     def add_in_head(self, newNode):
         if self.tail is None:
             self.tail = newNode
-            item.prev = None
-            item.next = None
+            newNode.prev = None
+            newNode.next = None
         else:
             self.head.prev = newNode
             newNode.next = self.head
