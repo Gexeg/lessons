@@ -61,7 +61,6 @@ class LinkedList2:
             return
         return False
 
-
     def clean(self):
         self.head = None
         self.tail = None
@@ -85,12 +84,12 @@ class LinkedList2:
                 self.tail = newNode
                 return True
         else:
-            node = self.find(afterNode)
+            node = self.find(afterNode.value)
             if node == self.tail and node != None:
                 node.next = newNode
                 newNode.prev = node
                 self.tail = newNode
-                return
+                return True
             if node:
                 newNode.prev = node
                 newNode.next = node.next
@@ -108,3 +107,4 @@ class LinkedList2:
             self.head.prev = newNode
             newNode.next = self.head
         self.head = newNode
+
