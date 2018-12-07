@@ -1,3 +1,4 @@
+
 import ctypes
 
 
@@ -55,8 +56,9 @@ class DynArray:
             self.array[str_ind] = self.array[str_ind + 1]
             str_ind += 1
         self.count -= 1
-        if self.count <= (self.capacity/2):
-            if self.capacity/2 < 16:
+        array_fill = self.count/self.capacity
+        if array_fill < 0.5:
+            if self.capacity/1.5 < 16:
                 self.resize(16)
             else:
                 self.resize(round(self.capacity/1.5))
