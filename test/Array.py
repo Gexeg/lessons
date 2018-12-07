@@ -1,4 +1,4 @@
-import ctypes, unittest
+import ctypes
 
 
 class DynArray:
@@ -33,6 +33,8 @@ class DynArray:
         self.count += 1
 
     def insert(self, ind, itm):
+        if ind < 0 or ind >= self.count:
+            raise IndexError('Index is out of bounds')
         if self.count == self.capacity:
             self.resize(2 * self.capacity)
         if ind >= self.count:
@@ -59,52 +61,3 @@ class DynArray:
             else:
                 self.resize(round(self.capacity/1.5))
         return
-class ls2_test(unittest.TestCase):
-
-    def setUp(self):
-        pass
-
-    def test_insert(self):
-        da = DynArray()
-        capacity_1 = da.capacity
-        for i in range(16):
-            da.append(i)
-        da.insert(2, 151)
-        self.assertEqual(da[2], 151)
-        self.assertEqual(capacity_1, 16)
-        self.assertEqual(da.capacity, 32)
-
-    def test_insert_resize(self):
-        da = DynArray()
-        for i in range(15):
-            da.append(i)
-        da.insert(2, 151)
-        self.assertEqual(da[2], 151)
-        self.assertEqual(da.capacity, 16)
-
-    def test_delete(self):
-        da = DynArray()
-        for i in range(15):
-            da.append(i)
-        da.delete(2)
-        self.assertEqual(da[2], 3)
-
-    def test_delete_resize(self):
-        da = DynArray()
-        for i in range(17):
-            da.append(i)
-        da.delete(15)
-        self.assertEqual(da[15], 16)
-        self.assertEqual(da.capacity, 21)
-
-    def test_delete_resize_2(self):
-        da = DynArray()
-        da.capacity = 18
-        for i in range(8):
-            da.append(i)
-        da.delete(6)
-        self.assertEqual(da[6], 7)
-        self.assertEqual(da.capacity, 16)
-
-    def tearDown(self):
-        pass
