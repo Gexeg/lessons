@@ -33,7 +33,7 @@ class DynArray:
         self.count += 1
 
     def insert(self, ind, itm):
-        if ind < 0 or ind >= self.count:
+        if ind < 0 or ind >= self.capacity:
             raise IndexError('Index is out of bounds')
         if self.count == self.capacity:
             self.resize(2 * self.capacity)
