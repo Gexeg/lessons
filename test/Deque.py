@@ -9,16 +9,17 @@ class Deque:
         self.queue.insert(0, item)
 
     def removeFront(self):
-        if len(self.items) == 0:
+        if len(self.queue) == 0:
             return None
         else:
-            return self.items.pop()
+            return self.queue.pop()
 
     def removeTail(self):
-        if len(self.items) == 0:
+        if len(self.queue) == 0:
             return None
         else:
             return self.queue.pop(0)
 
     def size(self):
         return len(self.queue)
+
