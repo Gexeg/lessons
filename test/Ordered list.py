@@ -100,21 +100,22 @@ class OrderedList:
                 node = node.next
 
     def delete(self, val):
-        node = self.head
-        started = True
-        while node is not None:
-            if started == True:
-                if node.value == val:
-                    self.head = node.next
-                    if node.next:
-                        node.next.prev = None
+        node = self.find(val)
+        if node:
+            if self.head.value == val:
+                if self.len() <= 1:
+                    self.clean()
                     return
-                started = False
-            if node.value == val:
-                node.next.prev = node.prev
-                node.prev.next = node.next
+                self.head = self.head.next
+                self.head.prev = None
                 return
-            node = node.next
+            if node == self.tail and node != None:
+                self.tail.prev.next = None
+                self.tail = self.tail.prev
+                return
+            node.next.prev = node.prev
+            node.prev.next = node.next
+            return
         return False
 
     def clean(self):
@@ -160,4 +161,3 @@ class OrderedStringList(OrderedList):
             return 1
         else:
             return 0
-
