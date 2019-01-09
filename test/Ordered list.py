@@ -104,7 +104,8 @@ class OrderedList:
         if node:
             if self.head.value == val:
                 if self.len() <= 1:
-                    self.clean()
+                    self.head = None
+                    self.tail = None
                     return
                 self.head = self.head.next
                 self.head.prev = None
