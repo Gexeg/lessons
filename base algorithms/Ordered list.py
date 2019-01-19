@@ -92,10 +92,11 @@ class OrderedList:
             return
         return False
 
-    def clean(self):
+    def clean(self, change_asc = False):
         self.head = None
         self.tail = None
-        self.change_asc()
+        if change_asc:
+            self.change_asc()
 
     def len(self):
         node = self.head
