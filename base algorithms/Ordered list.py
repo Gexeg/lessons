@@ -129,7 +129,9 @@ class OrderedStringList(OrderedList):
         else:
             self.__ascending = True
 
-    def compare(self, v1, v2):
+    def compare(self, value1, value2):
+        v1 = str(value1)
+        v2 = str(value2)
         if self.get_asc():
             if len(v1.strip()) < len(v2.strip()):
                 return -1
