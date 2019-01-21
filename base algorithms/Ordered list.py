@@ -133,16 +133,16 @@ class OrderedStringList(OrderedList):
         v1 = str(value1)
         v2 = str(value2)
         if self.get_asc():
-            if len(v1.strip()) < len(v2.strip()):
+            if v1.strip() < v2.strip():
                 return -1
-            elif len(v1.strip()) > len(v2.strip()):
+            elif v1.strip() > v2.strip():
                 return 1
             else:
                 return 0
         else:
-            if len(v1.strip()) < len(v2.strip()):
+            if v1.strip() < v2.strip():
                 return 1
-            elif len(v1.strip()) > len(v2.strip()):
+            elif v1.strip() > v2.strip():
                 return -1
             else:
                 return 0
