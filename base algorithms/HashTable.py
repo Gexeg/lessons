@@ -1,3 +1,5 @@
+import unittest
+
 class HashTable:
     def __init__(self, sz, stp):
         self.size = sz
@@ -35,3 +37,46 @@ class HashTable:
             marked_slots += 1
             if marked_slots == self.size:
                 return None
+
+class ls2_test(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_put(self):
+        h_table = HashTable(19, 3)
+        for i in range(19):
+            h_table.put('Hash')
+        self.assertEqual(h_table.put('another-hash'), None)
+
+    def test_put_empty_table(self):
+        h_table = HashTable(19, 3)
+        for i in range(19):
+            h_table.put('Hash')
+
+        self.assertEqual(h_table.put('another-hash'), None)
+
+    def test_hash(self):
+        h_table = HashTable(19, 3)
+        a = h_table.hash_fun('Hash')
+        self.assertEqual(a < 20, True)
+
+    def test_find(self):
+        h_table = HashTable(100, 3)
+        for i in range(100):
+            h_table.put('Hash' + str(i))
+
+
+        a = 0
+        for i in range(100):
+            if h_table.find('Hash' + str(i)) is None:
+                a += 1
+        for i in h_table.slots:
+            if i is None:
+                a +=1
+        self.assertEqual(a, 0)
+
+    def tearDown(self):
+        pass
+
+unittest.main()
