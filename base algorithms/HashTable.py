@@ -3,25 +3,25 @@ class HashTable:
         self.size = sz
         self.step = stp
         self.slots = [None] * self.size
-        self.count = 0
 
     def hash_fun(self, value):
         return id(value) % self.size
 
     def seek_slot(self, value):
         slot = self.hash_fun(value)
-        if self.count >= self.size:
-            return None
+        visited_slots = 0
         while True:
             if self.slots[slot] is None:
-                return str(slot)
+                return slot
             slot = (slot + self.step) % self.size
+            visited_slots += 1
+            if visited_slots > self.size:
+                return None
 
     def put(self, value):
-        if self.seek_slot(value):
-            free_slot = int(self.seek_slot(value))
+        if self.seek_slot(value) or self.seek_slot(value) == 0:
+            free_slot = self.seek_slot(value)
             self.slots[free_slot] = value
-            self.count += 1
             return free_slot
         return None
 
