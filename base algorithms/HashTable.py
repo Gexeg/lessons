@@ -5,6 +5,7 @@ class HashTable:
         self.size = sz
         self.step = stp
         self.slots = [None] * self.size
+        self.collision_counter = 0
 
     def hash_fun(self, value):
         return id(value) % self.size
@@ -12,17 +13,21 @@ class HashTable:
     def seek_slot(self, value):
         slot = self.hash_fun(value)
         visited_slots = 0
+        collision = False
         while True:
             if self.slots[slot] is None:
                 return slot
+            if collision is False:
+                self.collision_counter += 1
+                collision = True
             slot = (slot + self.step) % self.size
             visited_slots += 1
             if visited_slots > self.size:
                 return None
 
     def put(self, value):
-        if self.seek_slot(value) or self.seek_slot(value) == 0:
-            free_slot = self.seek_slot(value)
+        free_slot = self.seek_slot(value)
+        if free_slot or free_slot == 0:
             self.slots[free_slot] = value
             return free_slot
         return None
@@ -38,45 +43,8 @@ class HashTable:
             if marked_slots == self.size:
                 return None
 
-class ls2_test(unittest.TestCase):
 
-    def setUp(self):
-        pass
-
-    def test_put(self):
-        h_table = HashTable(19, 3)
-        for i in range(19):
-            h_table.put('Hash')
-        self.assertEqual(h_table.put('another-hash'), None)
-
-    def test_put_empty_table(self):
-        h_table = HashTable(19, 3)
-        for i in range(19):
-            h_table.put('Hash')
-
-        self.assertEqual(h_table.put('another-hash'), None)
-
-    def test_hash(self):
-        h_table = HashTable(19, 3)
-        a = h_table.hash_fun('Hash')
-        self.assertEqual(a < 20, True)
-
-    def test_find(self):
-        h_table = HashTable(100, 3)
-        for i in range(100):
-            h_table.put('Hash' + str(i))
-
-
-        a = 0
-        for i in range(100):
-            if h_table.find('Hash' + str(i)) is None:
-                a += 1
-        for i in h_table.slots:
-            if i is None:
-                a +=1
-        self.assertEqual(a, 0)
-
-    def tearDown(self):
-        pass
-
-unittest.main()
+h_table = HashTable(10000, 55)
+for num in range(10000):
+    h_table.put('Hash' + str(num))
+print(h_table.collision_counter)
