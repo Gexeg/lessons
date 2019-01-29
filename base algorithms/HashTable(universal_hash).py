@@ -5,7 +5,6 @@ class HashTable:
         self.size = sz
         self.step = stp
         self.slots = [None] * self.size
-        self.hf_fun = lambda value, a, b, p: (((a * id(value)) + b) % p) % self.size
         self.coeff_roster = self.generate_coefficients(fun_amount)
         """В рамках теста функции выбираются вручную, чтобы можно было
         посмотреть сразу все семейство. В общем случае выбирается одна функция из семейства
@@ -14,8 +13,9 @@ class HashTable:
         self.collision_counter = 0
 
     def hash_fun(self, value):
+        fun = lambda value, a, b, p: (((a * id(value)) + b) % p) % self.size
         curr_coeff = self.coeff_roster[self.curr_coeff]
-        return self.hf_fun(value, curr_coeff[0], curr_coeff[1], curr_coeff[2])
+        return fun(value, curr_coeff[0], curr_coeff[1], curr_coeff[2])
 
     def generate_coefficients(self, fun_amount):
         prime_num = []
@@ -74,11 +74,11 @@ class HashTable:
 
 stats = {}
 for i in range(3):
-    h_table = HashTable(10000, 55, 3, i)
-    for num in range(10000):
-        h_table.put('Hash' + str(num))
+    h_table = HashTable(23, 3, 3, i)
+    for num in range(100):
+        h_table.put('Hash' + str(randint(0, 100000)))
     stats[str(h_table.coeff_roster[h_table.curr_coeff])] = h_table.collision_counter
 
-print('Длина таблицы: 10000, шаг: 55')
+print('Длина таблицы: 23, шаг: 3')
 for key, val in stats.items():
     print('Используемые коэффициенты и простое число(a,b,p): ',key,' Количество коллизий:',val)
