@@ -1,5 +1,3 @@
-import unittest
-
 class NativeDictionary:
     def __init__(self, sz):
         self.size = sz
@@ -48,44 +46,3 @@ class NativeDictionary:
                  if marked_slots > self.size:
                      return None
          return None
-
-class ls2_test(unittest.TestCase):
-
-    def setUp(self):
-        pass
-
-    def test_get_real_key(self):
-        h_table = NativeDictionary(19)
-        for i in range(19):
-            h_table.put(i, 'Hello' + str(i))
-        self.assertEqual(h_table.get(5), 'Hello5')
-
-    def test_get_false_key(self):
-        h_table = NativeDictionary(19)
-        for i in range(19):
-            h_table.put(i, 'Hello' + str(i))
-        self.assertEqual(h_table.get(20), None)
-
-    def test_put_replace(self):
-        h_table = NativeDictionary(19)
-        for i in range(19):
-            h_table.put(i, 'Hello')
-        h_table.put(5, 'World')
-        self.assertEqual(h_table.get(5), 'World')
-
-    def test_is_key(self):
-        h_table = NativeDictionary(19)
-        for i in range(19):
-            h_table.put(i, 'Hello')
-        test_counter = 0
-        for i in range(19):
-            if h_table.is_key(i) is False:
-                test_counter +=1
-        self.assertEqual(test_counter, 0)
-
-    def test_is_key_false(self):
-        h_table = NativeDictionary(19)
-        self.assertEqual(h_table.is_key('25'), False)
-
-    def tearDown(self):
-        pass
