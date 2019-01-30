@@ -18,7 +18,7 @@ class NativeDictionary:
     def is_key(self, key):
          slot = self.hash_fun(key)
          marked_slots = 0
-         if slot:
+         if slot or slot == 0:
              while True:
                  if self.slots[slot] == key:
                      return True
