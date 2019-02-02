@@ -4,7 +4,6 @@ class BloomFilter:
 
     def __init__(self, f_len):
         self.filter_len = f_len
-        # создаём битовый массив длиной f_len ...
         self.bitarray = bitarray(f_len)
         self.bitarray.setall(0)
 
@@ -27,4 +26,3 @@ class BloomFilter:
 
     def is_value(self, str1):
         return self.bitarray[self.hash1(str1)] and self.bitarray[self.hash2(str1)]
-
