@@ -27,3 +27,4 @@ class BloomFilter:
 
     def is_value(self, str1):
         return self.bitarray[self.hash1(str1)] and self.bitarray[self.hash2(str1)]
+
