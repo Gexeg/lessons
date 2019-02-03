@@ -12,7 +12,8 @@ class PowerSet:
 
     def remove(self, value):
         if value in self.slots:
-            return self.slots.remove(value)
+            self.slots.remove(value)
+            return True
         return False
 
     def intersection(self, set2):
@@ -44,3 +45,4 @@ class PowerSet:
             if i in self.slots:
                 counter +=1
         return counter == len(set2.slots)
+
