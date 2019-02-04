@@ -1,3 +1,5 @@
+"""Отрывок кода написан как пример для конспекта по части книги "Чистый код" Роберта Мартина ссылка на пост: https://zen.yandex.ru/media/id/5b7ae22633ef9b00a8cc79f3/chistyi-kod-formatirovanie-obekty-i-struktury-dannyh-obrabotka-oshibok-5bf0029980d3f300af13c567"""
+
 from random import randint
 import os
 
