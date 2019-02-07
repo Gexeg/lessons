@@ -23,9 +23,6 @@ def quicksort(array, start, end):
             quicksort(array, pos + 1, end)
             end = pos - 1
 
-arr = [0,213,454,648,4,34,3213,44,8,7,9,9,1,3,5,7,8,0,45]
-quicksort(arr, 0, len(arr) - 1 )
-print(arr)
 
 big_arr_quicksort = [random.random() for i in range(10000)]
 big_arr_p_sort = [random.random() for i in range(10000)]
