@@ -16,36 +16,28 @@ def separ(array, start, end):
 def quicksort(array, start, end):
     if start < end:
         position = separ(array, start, end)
+        stack = []
         if position - start > end - position:
-            stack = []
             stack.append(start)
             stack.append(position - 1)
-            while len(stack) > 0:
-                wh_end = stack.pop()
-                wh_start = stack.pop()
-                pos = separ(array, wh_start, wh_end)
-                if pos - 1 > wh_start:
-                    stack.append(wh_start)
-                    stack.append(pos-1)
-                if pos + 1 < wh_end:
-                    stack.append(pos + 1)
-                    stack.append(wh_end)
-            return quicksort(array, position + 1, end)
+            next_start = position + 1
+            next_end = end
         else:
-            stack = []
             stack.append(position + 1)
             stack.append(end)
-            while len(stack) > 0:
-                wh_end = stack.pop()
-                wh_start = stack.pop()
-                pos = separ(array, wh_start, wh_end)
-                if pos - 1 > wh_start:
-                    stack.append(wh_start)
-                    stack.append(pos - 1)
-                if pos + 1 < wh_end:
-                    stack.append(pos + 1)
-                    stack.append(wh_end)
-            return quicksort(array, position + 1, end)
+            next_start = start
+            next_end = position - 1
+        while len(stack) > 0:
+            wh_end = stack.pop()
+            wh_start = stack.pop()
+            pos = separ(array, wh_start, wh_end)
+            if pos - 1 > wh_start:
+                stack.append(wh_start)
+                stack.append(pos - 1)
+            if pos + 1 < wh_end:
+                stack.append(pos + 1)
+                stack.append(wh_end)
+        return quicksort(array, next_start, next_end)
 
 arr = [1,10,5,9,0, 1293,1023,0,12]
 
