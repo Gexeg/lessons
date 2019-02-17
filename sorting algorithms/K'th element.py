@@ -24,10 +24,11 @@ def separ(array, start, end):
     return pos
 
 a = [random.randint(0,100) for i in range(10 )]
-print('Сгенерированный массив')
-print(a)
 k = 8
 b = find_k(a, k)
+print('Сгенерированный массив')
+print('К\'элемент = ', b)
+print(a)
 a.sort()
 print()
 print('Отсортированный массив(для удобства проверки)')
