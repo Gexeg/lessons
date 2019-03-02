@@ -1,5 +1,3 @@
-import random, timeit
-
 class Heap:
 
     def __init__(self, capacity):
