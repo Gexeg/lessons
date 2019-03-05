@@ -55,7 +55,7 @@ class LinkedList:
             while self.find(val):
                 self.delete(val)
         else:
-            while node is not None:
+            while node:
                 if started == True:
                     if node.value == val:
                         if self.len() <= 1:
@@ -228,5 +228,4 @@ class ls2_test(unittest.TestCase):
 
     def tearDown(self):
         pass
-
 
