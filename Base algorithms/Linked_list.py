@@ -78,18 +78,8 @@ class LinkedList:
                         self.tail = None
 
     def clean(self):
-        node = self.head
-        started = True
-        while node is not None:
-            if started == True:
-                started = False
-                previos_node = node
-            previos_node.next = None
-            previos_node = node
-            node = node.next
         self.head = None
         self.tail = None
-        return None
 
     def len(self):
         node = self.head
