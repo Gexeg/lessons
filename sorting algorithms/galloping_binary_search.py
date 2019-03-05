@@ -43,6 +43,7 @@ class ls24_test(unittest.TestCase):
 
     def test_galloping_search_end_of_array(self):
         array = [i + 1 for i in range(10)]
+        self.assertEqual(galloping_binary_search(array, 1), True)
         self.assertEqual(galloping_binary_search(array, 10), True)
 
     def test_galloping_search_null(self):

@@ -187,6 +187,8 @@ class ls2_test(unittest.TestCase):
         s_list.add_in_tail(Node(175))
         s_list.delete(175)
         self.assertEqual(len(s_list.find_all(175)), 3)
+        self.assertEqual(s_list.head.value, 175)
+        self.assertEqual(s_list.tail.value, 175)
 
     def test_delete_node_empty_list(self):
         s_list = LinkedList()
@@ -237,6 +239,4 @@ class ls2_test(unittest.TestCase):
     def tearDown(self):
         pass
 
-
-unittest.main()
 
