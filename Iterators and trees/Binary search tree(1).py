@@ -1,137 +1,134 @@
-import unittest
+
+class BSTNode:
+
+    def __init__(self, key, val, parent):
+        self.NodeKey = key
+        self.NodeValue = val
+        self.Parent = parent
+        self.LeftChild = None
+        self.RightChild = None
 
 
-class Tree2Node:
-    def __init__(self, parent, key):
-        self.parent = parent
-        self.left_child = None
-        self.right_child = None
-        self.key = key
+class BSTFind:
+
+    def __init__(self):
+        self.Node = None
+        self.NodeHasKey = False
+        self.ToLeft = False
 
 
-class Tree2:
-    def __init__(self, key):
-        self.root = Tree2Node(None, key)
+class BST:
 
-    def find_node(self, value):
-        """Поиск узла по значению"""
-        current_node = self.root
-        finded = False
-        lr_child = None
+    def __init__(self, node):
+        self.Root = node
+
+    def FindNodeByKey(self, key):
+        current_node = self.Root
+        find_result = BSTFind()
+        if current_node is None:
+            return find_result
         while True:
-            if current_node.key == value:
-                finded = True
-                return current_node, finded, lr_child
-            elif current_node.key < value:
-                if current_node.right_child:
-                    current_node = current_node.right_child
+            if current_node.NodeKey == key:
+                find_result.Node = current_node
+                find_result.NodeHasKey = True
+                return find_result
+            elif current_node.NodeKey < key:
+                if current_node.RightChild:
+                    current_node = current_node.RightChild
                 else:
-                    lr_child = 'right'
-                    return current_node, finded, lr_child
-            elif current_node.key > value:
-                if current_node.left_child:
-                    current_node = current_node.left_child
+                    find_result.Node = current_node
+                    return find_result
+            elif current_node.NodeKey > key:
+                if current_node.LeftChild:
+                    current_node = current_node.LeftChild
                 else:
-                    lr_child = 'left'
-                    return current_node, finded, lr_child
+                    find_result.Node = current_node
+                    find_result.ToLeft = True
+                    return find_result
 
-    def add_node(self, key):
-        """Добавление нового узла все, что больше - направо, все, что меньше - налево"""
-        find_result = self.find_node(key)
-        if find_result[1]:
-            print('No duplicates allowed')
+    def AddKeyValue(self, key, val):
+        find_result = self.FindNodeByKey(key)
+        if find_result.NodeHasKey:
             return False
-        if find_result[1] is False:
-            if find_result[2] == 'right':
-                find_result[0].right_child = Tree2Node(find_result[0], key)
-                return
-            elif find_result[2] == 'left':
-                find_result[0].left_child = Tree2Node(find_result[0], key)
-                return
+        if find_result.ToLeft:
+            new_node = BSTNode(key, val, find_result.Node)
+            find_result.Node.LeftChild = new_node
+        else:
+            new_node = BSTNode(key, val, find_result.Node)
+            find_result.Node.RightChild = new_node
 
-    def min_max_node(self, mm, start_node):
-        """Метод поиска максимального/минимального значения в дереве"""
-        node = self.find_node(start_node)[0]
-        if mm == 'min':
+    def FinMinMax(self, FromNode, FindMax):
+        node = FromNode
+        if node is None:
+            return None
+        if FindMax is False:
             while True:
-                if node.left_child:
-                    node = node.left_child
+                if node.LeftChild:
+                    node = node.LeftChild
                 else:
                     return node
-        if mm == 'max':
+        if FindMax:
             while True:
-                if node.right_child:
-                    node = node.right_child
+                if node.RightChild:
+                    node = node.RightChild
                 else:
                     return node
 
-    def delete_node(self, key):
-        """Удаление узла"""
-        if self.root.key == key:
-            print('Cannot delete root-node')
+    def DeleteNodeByKey(self, key):
+        find_result = self.FindNodeByKey(key)
+        if find_result.NodeHasKey is False:
             return False
-        elif self.find_node(key)[1]:
-            node = self.find_node(key)[0]
-        else:
+        node = find_result.Node
+        if self.Root == node:
             return False
-        if node.right_child is None and node.left_child is None:
-            if node.parent.right_child and node.parent.right_child.key == key:
-                node.parent.right_child = None
+        if node.RightChild is None and node.LeftChild is None:
+            if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
+                node.Parent.RightChild = None
                 return
-            if node.parent.left_child and node.parent.left_child.key == key:
-                node.parent.left_child = None
+            if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
+                node.Parent.LeftChild = None
                 return
-        elif node.right_child is None:
-            if node.parent.right_child and node.parent.right_child.key == key:
-                node.parent.right_child = node.left_child
-                node.left_child.parent = node.parent
+        elif node.RightChild is None:
+            if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
+                node.Parent.RightChild = node.LeftChild
+                node.LeftChild.Parent = node.Parent
                 return
-            if node.parent.left_child and node.parent.left_child.key == key:
-                node.parent.left_child = node.left_child
-                node.left_child.parent = node.parent
+            if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
+                node.Parent.LeftChild = node.LeftChild
+                node.LeftChild.Parent = node.Parent
                 return
         else:
-            new_node = node.right_child
+            new_node = node.RightChild
             while True:
-                if new_node.right_child is None and new_node.left_child is None:
-                    if node.parent.right_child and node.parent.right_child.key == key:
-                        node.parent.right_child = new_node
-                        new_node.parent = node.parent
+                if new_node.RightChild is None and new_node.LeftChild is None:
+                    if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
+                        node.Parent.RightChild = new_node
+                        new_node.Parent = node.Parent
                         return
-                    if node.parent.left_child and node.parent.left_child.key == key:
-                        node.parent.left_child = None
-                        new_node.parent = node.parent
+                    if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
+                        node.Parent.LeftChild = None
+                        new_node.Parent = node.Parent
                         return
-                new_node = new_node.left_child
+                if new_node.LeftChild:
+                    new_node = new_node.LeftChild
+                else:
+                    if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
+                        node.Parent.RightChild = new_node
+                        new_node.Parent = node.Parent
+                        return
+                    if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
+                        node.Parent.LeftChild = None
+                        new_node.Parent = node.Parent
+                        return
 
-
-a_tree2 = Tree2(14)
-a_tree2.add_node(15)
-a_tree2.add_node(12)
-a_tree2.add_node(18)
-a_tree2.add_node(17)
-a_tree2.add_node(5464)
-a_tree2.add_node(22)
-a_tree2.add_node(23)
-a_tree2.add_node(21)
-a_tree2.add_node(13)
-
-
-class Ls13Test(unittest.TestCase):
-
-    def setUp(self):
-        pass
-
-    def test_min_max_node(self):
-        self.assertEqual(a_tree2.min_max_node('min', 14).key, 12)
-        self.assertEqual(a_tree2.min_max_node('max', 14).key, 5464)
-
-    def test_delete_node(self):
-        a_tree2.delete_node(23)
-        self.assertEqual(a_tree2.find_node(23)[1], False)
-
-    def tearDown(self):
-        pass
-
-
-unittest.main()
+    def Count(self):
+        counter = 0
+        stack = [self.Root]
+        while len(stack) > 0:
+            node = stack.pop()
+            counter += 1
+            if node.RightChild:
+                stack.append(node.RightChild)
+            if node.LeftChild:
+                stack.append(node.LeftChild)
+        return counter
