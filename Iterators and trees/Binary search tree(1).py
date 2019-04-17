@@ -50,15 +50,17 @@ class BST:
         find_result = self.FindNodeByKey(key)
         if find_result.Node is None:
             self.Root = BSTNode(key, val, None)
-            return
+            return True
         if find_result.NodeHasKey:
             return False
         if find_result.ToLeft:
             new_node = BSTNode(key, val, find_result.Node)
             find_result.Node.LeftChild = new_node
+            return True
         else:
             new_node = BSTNode(key, val, find_result.Node)
             find_result.Node.RightChild = new_node
+            return True
 
     def FinMinMax(self, FromNode, FindMax):
         node = FromNode
@@ -84,45 +86,41 @@ class BST:
         node = find_result.Node
         if self.Root == node:
             return False
+
+        def parent_child_link(node):
+            parent_node = node.Parent
+            def change_parent_right_child(new_value):
+                nonlocal parent_node
+                parent_node.RightChild = new_value
+            def change_parent_left_child(new_value):
+                nonlocal parent_node
+                parent_node.LeftChild = new_value
+            if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
+                return change_parent_right_child
+            if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
+                return change_parent_left_child
+
+        change_parent_child_link = parent_child_link(node)
         if node.RightChild is None and node.LeftChild is None:
-            if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
-                node.Parent.RightChild = None
-                return
-            if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
-                node.Parent.LeftChild = None
-                return
+            change_parent_child_link(None)
+            return True
         elif node.RightChild is None:
-            if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
-                node.Parent.RightChild = node.LeftChild
-                node.LeftChild.Parent = node.Parent
-                return
-            if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
-                node.Parent.LeftChild = node.LeftChild
-                node.LeftChild.Parent = node.Parent
-                return
+            change_parent_child_link(node.LeftChild)
+            node.LeftChild.Parent = node.Parent
+            return True
         else:
             new_node = node.RightChild
             while True:
                 if new_node.RightChild is None and new_node.LeftChild is None:
-                    if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
-                        node.Parent.RightChild = new_node
-                        new_node.Parent = node.Parent
-                        return
-                    if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
-                        node.Parent.LeftChild = None
-                        new_node.Parent = node.Parent
-                        return
+                    change_parent_child_link(new_node)
+                    new_node.Parent = node.Parent
+                    return True
                 if new_node.LeftChild:
                     new_node = new_node.LeftChild
                 else:
-                    if node.Parent.RightChild and node.Parent.RightChild.NodeKey == key:
-                        node.Parent.RightChild = new_node
-                        new_node.Parent = node.Parent
-                        return
-                    if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
-                        node.Parent.LeftChild = None
-                        new_node.Parent = node.Parent
-                        return
+                    change_parent_child_link(new_node)
+                    new_node.Parent = node.Parent
+                    return True
 
     def Count(self):
         counter = 0
