@@ -1,4 +1,5 @@
 
+
 class BSTNode:
 
     def __init__(self, key, val, parent):
@@ -87,7 +88,7 @@ class BST:
         if self.Root == node:
             return False
 
-        def parent_child_link(node):
+        def parent_child_link(node, key):
             parent_node = node.Parent
             def change_parent_right_child(new_value):
                 nonlocal parent_node
@@ -100,7 +101,7 @@ class BST:
             if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
                 return change_parent_left_child
 
-        change_parent_child_link = parent_child_link(node)
+        change_parent_child_link = parent_child_link(node, key)
         if node.RightChild is None and node.LeftChild is None:
             change_parent_child_link(None)
             return True
@@ -109,17 +110,30 @@ class BST:
             node.LeftChild.Parent = node.Parent
             return True
         else:
-            new_node = node.RightChild
+            new_node = self.FinMinMax(node.RightChild, False)
             while True:
                 if new_node.RightChild is None and new_node.LeftChild is None:
                     change_parent_child_link(new_node)
+                    new_node_new_parent_link = parent_child_link(new_node, new_node.NodeKey)
+                    new_node_new_parent_link(None)
                     new_node.Parent = node.Parent
+                    if node.LeftChild:
+                        new_node.LeftChild = node.LeftChild
+                    if node.RightChild:
+                        new_node.RightChild = node.RightChild
                     return True
                 if new_node.LeftChild:
                     new_node = new_node.LeftChild
-                else:
+                elif new_node.RightChild:
+                    new_node_new_parent_link = parent_child_link(new_node, new_node.NodeKey)
+                    new_node_new_parent_link(new_node.RightChild)
+                    new_node.RightChild.Parent = new_node.Parent
                     change_parent_child_link(new_node)
                     new_node.Parent = node.Parent
+                    if node.LeftChild:
+                        new_node.LeftChild = node.LeftChild
+                    if node.RightChild:
+                        new_node.RightChild = node.RightChild
                     return True
 
     def Count(self):
@@ -128,6 +142,7 @@ class BST:
         while len(stack) > 0:
             node = stack.pop()
             counter += 1
+            print(node.NodeKey)
             if node.RightChild:
                 stack.append(node.RightChild)
             if node.LeftChild:
