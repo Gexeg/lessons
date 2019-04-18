@@ -142,7 +142,6 @@ class BST:
         while len(stack) > 0:
             node = stack.pop()
             counter += 1
-            print(node.NodeKey)
             if node.RightChild:
                 stack.append(node.RightChild)
             if node.LeftChild:
