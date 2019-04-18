@@ -84,9 +84,6 @@ class BST:
         find_result = self.FindNodeByKey(key)
         if find_result.NodeHasKey is False:
             return False
-        node = find_result.Node
-        if self.Root == node:
-            return False
 
         def parent_child_link(node, key):
             parent_node = node.Parent
@@ -100,6 +97,40 @@ class BST:
                 return change_parent_right_child
             if node.Parent.LeftChild and node.Parent.LeftChild.NodeKey == key:
                 return change_parent_left_child
+
+        node = find_result.Node
+        if self.Root == node:
+            if self.Count() == 1:
+                self.Root == None
+                return True
+            elif node.RightChild is None:
+                self.Root.LeftChild.Parent = None
+                self.Root = self.Root.LeftChild
+                return True
+            else:
+                new_node = self.FinMinMax(self.Root.RightChild, False)
+                while True:
+                    if new_node.RightChild is None and new_node.LeftChild is None:
+                        new_node_new_parent_link = parent_child_link(new_node, new_node.NodeKey)
+                        new_node_new_parent_link(None)
+                        new_node.Parent = None
+                        if node.LeftChild:
+                            new_node.LeftChild = node.LeftChild
+                        if node.RightChild:
+                            new_node.RightChild = node.RightChild
+                        self.Root = new_node
+                        return True
+                    elif new_node.RightChild:
+                        new_node_new_parent_link = parent_child_link(new_node, new_node.NodeKey)
+                        new_node_new_parent_link(new_node.RightChild)
+                        new_node.RightChild.Parent = new_node.Parent
+                        new_node.Parent = None
+                        self.Root = new_node
+                        if node.LeftChild:
+                            new_node.LeftChild = node.LeftChild
+                        if node.RightChild:
+                            new_node.RightChild = node.RightChild
+                        return True
 
         change_parent_child_link = parent_child_link(node, key)
         if node.RightChild is None and node.LeftChild is None:
@@ -122,8 +153,6 @@ class BST:
                     if node.RightChild:
                         new_node.RightChild = node.RightChild
                     return True
-                if new_node.LeftChild:
-                    new_node = new_node.LeftChild
                 elif new_node.RightChild:
                     new_node_new_parent_link = parent_child_link(new_node, new_node.NodeKey)
                     new_node_new_parent_link(new_node.RightChild)
