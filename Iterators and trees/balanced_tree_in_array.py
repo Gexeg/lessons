@@ -1,4 +1,9 @@
 
+def GenerateBBSTArray(array):
+    sorted_array = sort_array(array)
+    builded_tree = create_balanced_tree_in_array(sorted_array)
+    return builded_tree.Tree
+
 class aBST:
     def __init__(self, depth):
         self.tree_size = (2 ** (depth + 1)) - 1
@@ -33,11 +38,6 @@ class aBST:
             return -find_result
         if find_result >= 0:
             return -1
-
-def GenerateBBSTArray(array):
-    sorted_array = sort_array(array)
-    builded_tree = create_balanced_tree_in_array(sorted_array)
-    return builded_tree.Tree
 
 def create_balanced_tree_in_array(array):
     """Функция сначала определяет необходимый размер массива и глубину будущего дерева,
