@@ -1,8 +1,8 @@
 class Heap:
 
     def __init__(self):
-        self.HeapArray= []
-        self.last_node_index = 0# хранит неотрицательные числа-ключи
+        self.HeapArray = []# хранит неотрицательные числа-ключи
+        self.last_node_index = 0
 
     def MakeHeap(self, a):
         self.HeapArray = [None] * len(a)
@@ -49,12 +49,12 @@ class Heap:
             else:
                 l_child_value = None
             if r_child_value and l_child_value:
-               if r_child_value > l_child_value:
-                   max_child_ind = r_child_index
-                   max_child_value = r_child_value
-               else:
-                   max_child_ind = l_child_index
-                   max_child_value = l_child_value
+                if r_child_value > l_child_value:
+                    max_child_ind = r_child_index
+                    max_child_value = r_child_value
+                else:
+                    max_child_ind = l_child_index
+                    max_child_value = l_child_value
             elif r_child_value:
                 max_child_ind = r_child_index
                 max_child_value = r_child_value
