@@ -2,25 +2,23 @@ class Heap:
 
     def __init__(self):
         self.HeapArray = []# хранит неотрицательные числа-ключи
-        self.last_node_index = 0
 
     def MakeHeap(self, a):
         self.HeapArray = [None] * len(a)
         for key in a:
             self.Add(key)
 
-    def Add(self, value):
+    def Add(self, key):
         """добавление нового элемента"""
-        if None not in self.HeapArray:
+        None_ind = next((i for i, x in enumerate(self.HeapArray) if x is None), False)
+        if None_ind is False:
             return False
-        new_node = value
-        current_ind = self.last_node_index
-        self.HeapArray[self.last_node_index] = new_node
-        self.last_node_index += 1
+        current_ind = None_ind
+        self.HeapArray[None_ind] = key
         while current_ind != 0:
+            parent_node_index = (current_ind - 1) // 2
             new_node_value = self.HeapArray[current_ind]
             parent_node_value = self.HeapArray[(current_ind - 1) // 2]
-            parent_node_index = (current_ind - 1) // 2
             if new_node_value < parent_node_value:
                 break
             if new_node_value > parent_node_value:
@@ -32,10 +30,12 @@ class Heap:
         """Получение корня"""
         if len(self.HeapArray) == 0 or self.HeapArray[0] is None:
             return -1
+        none_ind = next((i - 1 for i, x in enumerate(self.HeapArray) if x is None), len(self.HeapArray)-1)
+
         pop = self.HeapArray[0]
-        self.HeapArray[0] = self.HeapArray[self.last_node_index - 1]
-        self.HeapArray[self.last_node_index - 1] = None
-        self.last_node_index -= 1
+
+        self.HeapArray[0] = self.HeapArray[none_ind]
+        self.HeapArray[none_ind] = None
         current_ind = 0
         while True:
             r_child_index = current_ind * 2 + 2 if current_ind * 2 + 2 < len(self.HeapArray) - 1 else None
