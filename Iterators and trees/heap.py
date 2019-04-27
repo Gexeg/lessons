@@ -1,11 +1,16 @@
 class Heap:
 
     def __init__(self):
-        self.HeapArray = []# хранит неотрицательные числа-ключи
+        self.HeapArray = []  # хранит неотрицательные числа-ключи
 
-    def MakeHeap(self, a):
-        self.HeapArray = [None] * len(a)
-        for key in a:
+    def MakeHeap(self, array):
+        new_tree_capacity = 0
+        tree_depth = 0
+        while new_tree_capacity < len(array):
+            tree_depth += 1
+            new_tree_capacity = (2 ** (tree_depth + 1)) - 1
+        self.HeapArray = [None] * new_tree_capacity
+        for key in array:
             self.Add(key)
 
     def Add(self, key):
@@ -30,45 +35,42 @@ class Heap:
         """Получение корня"""
         if len(self.HeapArray) == 0 or self.HeapArray[0] is None:
             return -1
-        none_ind = next((i - 1 for i, x in enumerate(self.HeapArray) if x is None), len(self.HeapArray)-1)
-
+        none_ind = next((i - 1 for i, x in enumerate(self.HeapArray) if x is None), len(self.HeapArray) - 1)
         pop = self.HeapArray[0]
-
         self.HeapArray[0] = self.HeapArray[none_ind]
         self.HeapArray[none_ind] = None
         current_ind = 0
+        current_value = self.HeapArray[0]
         while True:
-            r_child_index = current_ind * 2 + 2 if current_ind * 2 + 2 < len(self.HeapArray) - 1 else None
-            if r_child_index:
-                r_child_value = self.HeapArray[r_child_index] if self.HeapArray[r_child_index] else None
-            else:
-                r_child_value = None
-            l_child_index = current_ind * 2 + 1 if current_ind * 2 + 1 < len(self.HeapArray) - 1 else None
-            if l_child_index:
-                l_child_value = self.HeapArray[l_child_index] if self.HeapArray[l_child_index] else None
-            else:
-                l_child_value = None
-            if r_child_value and l_child_value:
-                if r_child_value > l_child_value:
-                    max_child_ind = r_child_index
-                    max_child_value = r_child_value
+            max_child_ind_value = self.find_max_child(current_ind)
+            if max_child_ind_value:
+                if current_value < max_child_ind_value[1]:
+                    self.swap(current_ind, max_child_ind_value[0])
+                    current_ind = max_child_ind_value[0]
                 else:
-                    max_child_ind = l_child_index
-                    max_child_value = l_child_value
-            elif r_child_value:
-                max_child_ind = r_child_index
-                max_child_value = r_child_value
-            elif l_child_value:
-                max_child_ind = l_child_index
-                max_child_value = l_child_value
-            else:
-                return pop
-            if self.HeapArray[current_ind] < max_child_value:
-                self.swap(current_ind, max_child_ind)
-                current_ind = max_child_ind
+                    return pop
+
             else:
                 return pop
 
+    def find_max_child(self, current_ind):
+        max_index = len(self.HeapArray) - 1
+        r_child_ind = current_ind * 2 + 2
+        l_child_ind = current_ind * 2 + 1
+
+        r_child_value = self.HeapArray[r_child_ind] if r_child_ind <= max_index else None
+        l_child_value = self.HeapArray[l_child_ind] if l_child_ind <= max_index else None
+
+        if r_child_value and l_child_value:
+            if r_child_value > l_child_value:
+                return r_child_ind, r_child_value
+            if l_child_value > r_child_value:
+                return l_child_ind, l_child_value
+        if r_child_value:
+            return r_child_ind, r_child_value
+        if l_child_value:
+            return l_child_ind, l_child_value
+
     def swap(self, i, j):
         self.HeapArray[i], self.HeapArray[j] = self.HeapArray[j], self.HeapArray[i]
-        return
+
