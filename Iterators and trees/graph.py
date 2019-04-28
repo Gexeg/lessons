@@ -1,76 +1,51 @@
 class Vertex:
-    def __init__(self):
-        return
+
+    def __init__(self, val):
+        self.Value = val
+
 
 class SimpleGraph:
-    def __init__(self, max_vert):
-        self.max_vertex = max_vert
-        self.vertex = []
-        self.m_adjacency = []
-        for i in range(self.max_vertex):
-            new_vertex = []
-            self.m_adjacency.append(new_vertex)
-            for j in range(self.max_vertex):
-                new_vertex.append(0)
 
-    def add_vertex(self):
+    def __init__(self, size):
+        self.max_vertex = size
+        self.m_adjacency = [[0] * size for _ in range(size)]
+        self.vertex = []
+
+    def AddVertex(self, v):
         """Добавление вершины графа"""
         if len(self.vertex) >= self.max_vertex:
-            return None
-        new_vertex = Vertex()
+            return
+        new_vertex = Vertex(v)
         self.vertex.append(new_vertex)
-        return
 
-    def add_edge(self, vertex_1, vertex_2):
-        """Добавление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
-        if vertex_1 > len(self.vertex)-1 or vertex_2 > len(self.vertex)-1 or vertex_1 == vertex_2:
-            return False
-        self.m_adjacency[vertex_1][vertex_2] = 1
-        self.m_adjacency[vertex_2][vertex_1] = 1
-        return
-
-    def del_edge(self, vertex_1, vertex_2):
-        """Удаление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
-        if vertex_1 > len(self.vertex) - 1 or vertex_2 > len(self.vertex) - 1 or vertex_1 == vertex_2:
-            return False
-        self.m_adjacency[vertex_1][vertex_2] = 0
-        self.m_adjacency[vertex_2][vertex_1] = 0
-        return
-
-    def del_vertex(self, vertex):
+    def RemoveVertex(self, vertex_ind):
         """Удаление вершины и всех ребер, связывающих её с другими по индексу вершины"""
-        if vertex > len(self.vertex) - 1:
-            return False
+        if vertex_ind > len(self.vertex) - 1:
+            return
         chained_with = []
-        t = 0
-        for i in self.m_adjacency[vertex]:
-            if i == 1:
-                chained_with.append(t)
-                self.m_adjacency[vertex][t] = 0
-            t +=1
-        for elem in chained_with:
-            self.m_adjacency[elem][vertex] = 0
-        return
+        adj_vertex_ind = 0
+        for edge in self.m_adjacency[vertex_ind]:
+            if edge == 1:
+                chained_with.append(adj_vertex_ind)
+            adj_vertex_ind +=1
+        for adj_vertex_i in chained_with:
+            self.RemoveEdge(vertex_ind, adj_vertex_i)
 
-new_graph = SimpleGraph(5)
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
+    def IsEdge(self, v1, v2):
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1 or v1 == v2:
+            return False
+        return self.m_adjacency[v1][v2] == 1
 
-new_graph.add_edge(0, 2)
-new_graph.add_edge(0, 1)
-new_graph.add_edge(0,3)
-new_graph.add_edge(4,2)
+    def AddEdge(self, v1, v2):
+        """Добавление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1 or v1 == v2:
+            return
+        self.m_adjacency[v1][v2] = 1
+        self.m_adjacency[v2][v1] = 1
 
-print('Матрица до удаления узла')
-for i in new_graph.m_adjacency:
-    print(i)
-
-new_graph.del_vertex(0)
-print()
-print('Узел и все его связи удалены')
-for i in new_graph.m_adjacency:
-    print(i)
+    def RemoveEdge(self, v1, v2):
+        """Удаление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1 or v1 == v2:
+            return False
+        self.m_adjacency[v1][v2] = 0
+        self.m_adjacency[v2][v1] = 0
