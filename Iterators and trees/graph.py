@@ -38,8 +38,6 @@ class SimpleGraph:
 
     def AddEdge(self, v1, v2):
         """Добавление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
-        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1 or v1 == v2:
-            return
         self.m_adjacency[v1][v2] = 1
         self.m_adjacency[v2][v1] = 1
 
