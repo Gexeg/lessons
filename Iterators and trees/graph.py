@@ -27,23 +27,25 @@ class SimpleGraph:
         for edge in self.m_adjacency[vertex_ind]:
             if edge == 1:
                 chained_with.append(adj_vertex_ind)
-            adj_vertex_ind +=1
+            adj_vertex_ind += 1
         for adj_vertex_i in chained_with:
             self.RemoveEdge(vertex_ind, adj_vertex_i)
 
     def IsEdge(self, v1, v2):
-        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1 or v1 == v2:
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1:
             return False
         return self.m_adjacency[v1][v2] == 1
 
     def AddEdge(self, v1, v2):
         """Добавление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1:
+            return
         self.m_adjacency[v1][v2] = 1
         self.m_adjacency[v2][v1] = 1
 
     def RemoveEdge(self, v1, v2):
         """Удаление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
-        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1 or v1 == v2:
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1:
             return False
         self.m_adjacency[v1][v2] = 0
         self.m_adjacency[v2][v1] = 0
