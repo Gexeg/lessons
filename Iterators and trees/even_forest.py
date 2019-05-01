@@ -1,4 +1,3 @@
-
 class SimpleTreeNode:
 
     def __init__(self, val, parent):
@@ -80,8 +79,8 @@ class SimpleTree:
                 return 1
             if nodes % 2 == 0:
                 if root.Parent:
-                    result.append(root.Parent.NodeValue)
-                    result.append(root.NodeValue)
+                    result.append(root.Parent)
+                    result.append(root)
                 return 0
             return nodes
         count_DFS(self.Root)
