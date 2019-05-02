@@ -1,3 +1,6 @@
+import unittest
+from random import randint
+
 class Vertex:
 
     def __init__(self, val):
@@ -78,3 +81,79 @@ class SimpleGraph:
                     if way:
                         current_vertex_index = self.vertex.index(way[-1])
         return []
+
+
+class ls2_test(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_find_way(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 0)
+        new_graph.AddEdge(0, 3)
+        new_graph.AddEdge(4, 2)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 1)
+        way_indexes = []
+        for i in new_graph.DepthFirstSearch(0, 3):
+            way_indexes.append(new_graph.vertex.index(i))
+
+        self.assertEqual(way_indexes, [0, 1, 2, 3])
+
+    def test_find_another_way(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 0)
+        new_graph.AddEdge(0, 3)
+        new_graph.AddEdge(4, 2)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 1)
+        way_indexes = []
+        for i in new_graph.DepthFirstSearch(4, 0):
+            way_indexes.append(new_graph.vertex.index(i))
+
+        self.assertEqual(way_indexes, [4, 2, 0])
+
+    def test_there_no_way(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 0)
+        new_graph.AddEdge(0, 3)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 1)
+        way_indexes = []
+        for i in new_graph.DepthFirstSearch(4, 0):
+            way_indexes.append(new_graph.vertex)
+
+        self.assertEqual(way_indexes, [])
+
+    def tearDown(self):
+        pass
+
+unittest.main()
