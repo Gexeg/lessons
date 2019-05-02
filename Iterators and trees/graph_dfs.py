@@ -65,7 +65,7 @@ class SimpleGraph:
         current_vertex_index = from_vertex
         way.append(current_vertex)
         current_vertex.Hit = True
-        while len(way) > 0:
+        while way:
             if self.vertex[from_vertex] in way and self.vertex[to_vertex] in way:
                 return way
             for vertex in range(self.max_vertex):
