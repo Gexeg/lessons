@@ -1,127 +1,119 @@
+
 class Vertex:
-    def __init__(self):
-        self.hit = False
-        return
 
-
-class Queue:
-    def __init__(self):
-        self.items = []
-
-    def enqueue(self, item):
-        self.items.insert(0,item)
-
-    def dequeue(self):
-        return self.items.pop()
-
-    def size(self):
-        return len(self.items)
-
+    def __init__(self, val):
+        self.Value = val
+        self.Hit = False
 
 class SimpleGraph:
-    def __init__(self, max_vert):
-        self.max_vertex = max_vert
-        self.vertex = []
-        self.m_adjacency = []
-        for i in range(self.max_vertex):
-            new_vertex = []
-            self.m_adjacency.append(new_vertex)
-            for j in range(self.max_vertex):
-                new_vertex.append(0)
 
-    def add_vertex(self):
+    def __init__(self, size):
+        self.max_vertex = size
+        self.m_adjacency = [[0] * size for _ in range(size)]
+        self.vertex = []
+
+    def AddVertex(self, v):
         """Добавление вершины графа"""
         if len(self.vertex) >= self.max_vertex:
-            return None
-        new_vertex = Vertex()
+            return
+        new_vertex = Vertex(v)
         self.vertex.append(new_vertex)
-        return
 
-    def add_edge(self, vertex_1, vertex_2):
-        """Добавление ребра между двумя вершинами графа.
-        Ребро однонаправлено от 1 вершины ко 2. (необходимо ввести индексы вершин)"""
-        if vertex_1 > len(self.vertex)-1 or vertex_2 > len(self.vertex)-1 or vertex_1 == vertex_2:
-            return False
-        self.m_adjacency[vertex_1][vertex_2] = 1
-        return
-
-    def del_edge(self, vertex_1, vertex_2):
-        """Удаление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
-        if vertex_1 > len(self.vertex) - 1 or vertex_2 > len(self.vertex) - 1 or vertex_1 == vertex_2:
-            return False
-        self.m_adjacency[vertex_1][vertex_2] = 0
-        self.m_adjacency[vertex_2][vertex_1] = 0
-        return
-
-    def del_vertex(self, vertex):
+    def RemoveVertex(self, vertex_ind):
         """Удаление вершины и всех ребер, связывающих её с другими по индексу вершины"""
-        if vertex > len(self.vertex) - 1:
-            return False
-        for i in range(self.max_vertex):
-            self.m_adjacency[vertex][i]=0
-        for elem in self.m_adjacency:
-            elem[0] = 0
-        return
+        if vertex_ind > len(self.vertex) - 1:
+            return
+        chained_with = []
+        adj_vertex_ind = 0
+        for edge in self.m_adjacency[vertex_ind]:
+            if edge == 1:
+                chained_with.append(adj_vertex_ind)
+            adj_vertex_ind += 1
+        for adj_vertex_i in chained_with:
+            self.RemoveEdge(vertex_ind, adj_vertex_i)
 
-    def find_way_2(self, vertex_1, vertex_2):
-        """Поиск пути между вершинами графа через ширину(очередь)"""
-        for i in self.vertex:
-            i.hit = False
-        bfs = Queue()
-        parents = {}
-        current_vertex = self.vertex[vertex_1]
-        current_vertex_index = vertex_1
-        bfs.enqueue(current_vertex)
-        current_vertex.hit = True
-        while True:
-            if current_vertex_index == vertex_2:
+    def IsEdge(self, v1, v2):
+        """Есть ли между вершинами связь? (необходимо ввести индексы вершин)"""
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1:
+            return False
+        return self.m_adjacency[v1][v2] == 1
+
+    def AddEdge(self, v1, v2):
+        """Добавление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1:
+            return
+        self.m_adjacency[v1][v2] = 1
+        self.m_adjacency[v2][v1] = 1
+
+    def RemoveEdge(self, v1, v2):
+        """Удаление ребра между двумя вершинами графа (необходимо ввести индексы вершин)"""
+        if v1 > len(self.vertex) - 1 or v2 > len(self.vertex) - 1:
+            return False
+        self.m_adjacency[v1][v2] = 0
+        self.m_adjacency[v2][v1] = 0
+
+    def DepthFirstSearch(self, from_vertex, to_vertex):
+        """Поиск пути от одного узла к другому через обход в глубину"""
+        if from_vertex > len(self.vertex) or to_vertex > len(self.vertex):
+            return []
+        for vertex in self.vertex:
+            vertex.Hit = False
+        way = []
+        current_vertex = self.vertex[from_vertex]
+        current_vertex_index = from_vertex
+        way.append(current_vertex)
+        current_vertex.Hit = True
+        while way:
+            if self.vertex[from_vertex] in way and self.vertex[to_vertex] in way:
+                return way
+            for vertex in range(self.max_vertex):
+                if self.m_adjacency[current_vertex_index][vertex] == 1 and self.vertex[vertex].Hit is False:
+                    current_vertex = self.vertex[vertex]
+                    current_vertex_index = vertex
+                    current_vertex.Hit = True
+                    way.append(current_vertex)
+                    break
+                """Если путь зашел не туда"""
+                if vertex == self.max_vertex - 1:
+                    way.pop()
+                    if way:
+                        current_vertex_index = self.vertex.index(way[-1])
+        return []
+
+
+    def BreadthFirstSearch(self, from_vertex, to_vertex):
+        '''Поиск пути от одного узла к другому через обход в глубину'''
+        if from_vertex > len(self.vertex) or to_vertex > len(self.vertex):
+            return []
+        for vertex in self.vertex:
+            vertex.hit = False
+        queue = []
+        '''Т.к. в узле нет информации о родителе, то её необходимо собирать во время построения пути'''
+        parent_map = {}
+        current_vertex = self.vertex[from_vertex]
+        cur_vertex_ind = from_vertex
+        queue.insert(0, current_vertex)
+        current_vertex.Hit = True
+        while queue:
+            if cur_vertex_ind == to_vertex:
+                '''Если узел найден, восстанавливаем путь от последнего узла с помощью карты родителей 
+                и переворачиваем его.'''
                 path = []
                 path.append(current_vertex)
                 while True:
-                    if parents.get(current_vertex) == None:
+                    if parent_map.get(current_vertex) is None:
                         break
-                    path.append(parents.get(current_vertex))
-                    current_vertex = parents.get(current_vertex)
+                    path.append(parent_map.get(current_vertex))
+                    current_vertex = parent_map.get(current_vertex)
                 path.reverse()
                 return path
-            for i in range(self.max_vertex):
-                if self.m_adjacency[current_vertex_index][i] == 1 and self.vertex[i].hit is False:
-                    parents[self.vertex[i]] = current_vertex
-                    bfs.enqueue(self.vertex[i])
-                    self.vertex[i].hit = True
-            if bfs.size() == 0:
-                return None
-            current_vertex = bfs.dequeue()
-            current_vertex_index = self.vertex.index(current_vertex)
-
-
-new_graph = SimpleGraph(5)
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-new_graph.add_vertex()
-
-new_graph.add_edge(0, 2)
-new_graph.add_edge(1, 0)
-new_graph.add_edge(0, 3)
-new_graph.add_edge(4, 2)
-new_graph.add_edge(2, 3)
-new_graph.add_edge(2, 1)
-new_graph.add_edge(4, 1)
-
-
-print('Матрица связности')
-for i in new_graph.m_adjacency:
-    print(i)
-
-print()
-print('Поиск пути 0->3')
-for i in new_graph.find_way_2(0, 3):
-    print(new_graph.vertex.index(i))
-
-print()
-print('Поиск пути 4->0')
-for i in new_graph.find_way_2(4, 0):
-    print(new_graph.vertex.index(i))
+            for vertex_ind in range(self.max_vertex):
+                if self.m_adjacency[cur_vertex_ind][vertex_ind] == 1 and self.vertex[vertex_ind].Hit is False:
+                    '''Поскольку мы не знаем какая дорога приведет к искомому узлу, необходимо сохранять всех 
+                    родителей в карту'''
+                    parent_map[self.vertex[vertex_ind]] = current_vertex
+                    queue.insert(0, self.vertex[vertex_ind])
+                    self.vertex[vertex_ind].Hit = True
+            current_vertex = queue.pop()
+            cur_vertex_ind = self.vertex.index(current_vertex)
+        return []
