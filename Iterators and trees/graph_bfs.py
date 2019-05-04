@@ -78,3 +78,43 @@ class SimpleGraph:
                     if way:
                         current_vertex_index = self.vertex.index(way[-1])
         return []
+
+
+    def BreadthFirstSearch(self, from_vertex, to_vertex):
+        '''Поиск пути от одного узла к другому через обход в глубину'''
+        if from_vertex > len(self.vertex) or to_vertex > len(self.vertex):
+            return []
+        for vertex in self.vertex:
+            vertex.Hit = False
+        queue = []
+        '''Т.к. в узле нет информации о родителе, то её необходимо собирать во время построения пути'''
+        parent_map = {}
+        current_vertex = self.vertex[from_vertex]
+        cur_vertex_ind = from_vertex
+        queue.insert(0, current_vertex)
+        current_vertex.Hit = True
+        while True:
+            if cur_vertex_ind == to_vertex:
+                '''Если узел найден, восстанавливаем путь от последнего узла с помощью карты родителей 
+                и переворачиваем его.'''
+                path = []
+                path.append(current_vertex)
+                while True:
+                    if parent_map.get(current_vertex) is None:
+                        break
+                    path.append(parent_map.get(current_vertex))
+                    current_vertex = parent_map.get(current_vertex)
+                path.reverse()
+                return path
+            for vertex_ind in range(self.max_vertex):
+                if self.m_adjacency[cur_vertex_ind][vertex_ind] == 1 and self.vertex[vertex_ind].Hit is False:
+                    '''Поскольку мы не знаем какая дорога приведет к искомому узлу, необходимо сохранять всех 
+                    родителей в карту'''
+                    parent_map[self.vertex[vertex_ind]] = current_vertex
+                    queue.insert(0, self.vertex[vertex_ind])
+                    self.vertex[vertex_ind].Hit = True
+            if queue:
+                current_vertex = queue.pop()
+                cur_vertex_ind = self.vertex.index(current_vertex)
+            else:
+                return []
