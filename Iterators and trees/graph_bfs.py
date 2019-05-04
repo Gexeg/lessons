@@ -94,7 +94,7 @@ class SimpleGraph:
         cur_vertex_ind = from_vertex
         queue.insert(0, current_vertex)
         current_vertex.Hit = True
-        while queue:
+        while True:
             if cur_vertex_ind == to_vertex:
                 '''Если узел найден, восстанавливаем путь от последнего узла с помощью карты родителей 
                 и переворачиваем его.'''
@@ -114,6 +114,8 @@ class SimpleGraph:
                     parent_map[self.vertex[vertex_ind]] = current_vertex
                     queue.insert(0, self.vertex[vertex_ind])
                     self.vertex[vertex_ind].Hit = True
-            current_vertex = queue.pop()
-            cur_vertex_ind = self.vertex.index(current_vertex)
-        return []
+            if queue:
+                current_vertex = queue.pop()
+                cur_vertex_ind = self.vertex.index(current_vertex)
+            else:
+                return []
