@@ -1,3 +1,7 @@
+import unittest
+from random import randint
+
+
 class Vertex:
 
     def __init__(self, val):
@@ -118,3 +122,170 @@ class SimpleGraph:
                 cur_vertex_ind = self.vertex.index(current_vertex)
             else:
                 return []
+
+
+class ls2_test(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_find_several_runs(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(3, 2)
+        new_graph.AddEdge(2, 0)
+        new_graph.AddEdge(2, 4)
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(0, 3):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [0, 2, 3])
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(0, 4):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [0, 2, 4])
+
+    def test_find_best_way_from_several_ways(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(3, 0)
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(3, 0):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [3, 0])
+
+    def test_find_way_several_edges(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 0)
+        new_graph.AddEdge(0, 3)
+        new_graph.AddEdge(4, 2)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 1)
+        new_graph.AddEdge(4, 1)
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(0, 4):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [0, 1, 4])
+
+    def test_find_way_one_edge(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 1)
+        new_graph.AddEdge(1, 2)
+        new_graph.AddEdge(1, 3)
+        new_graph.AddEdge(3, 2)
+        new_graph.AddEdge(0, 2)
+
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(0, 2):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [0, 2])
+
+    def test_find_way_one_edge_backwards(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(3, 4)
+        new_graph.AddEdge(2, 4)
+
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(4, 2):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [4, 2])
+
+    def test_find_way_one_edge_one_node(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(4, 4)
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(4, 4):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [4])
+
+    def test_find_way_backwards(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 0)
+        new_graph.AddEdge(0, 3)
+        new_graph.AddEdge(4, 2)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 1)
+        new_graph.AddEdge(4, 1)
+        way_indexes = []
+        for vertex in new_graph.BreadthFirstSearch(4, 0):
+            way_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(way_indexes, [4, 1, 0])
+
+    def test_there_no_way(self):
+        new_graph = SimpleGraph(5)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 0)
+        new_graph.AddEdge(0, 3)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 1)
+        self.assertEqual(new_graph.BreadthFirstSearch(4, 0), [])
+
+    def tearDown(self):
+        pass
+
+
+unittest.main()
