@@ -1,3 +1,7 @@
+import unittest
+from random import randint
+
+
 class Vertex:
 
     def __init__(self, val):
@@ -141,3 +145,93 @@ class SimpleGraph:
             if strong_edges == 0:
                 weak_vertex.append(self.vertex[int(key)])
         return weak_vertex
+
+
+class ls2_test(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_find_weak_nodex_complex_structure(self):
+        new_graph = SimpleGraph(10)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 1)
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 2)
+        new_graph.AddEdge(1, 4)
+        new_graph.AddEdge(2, 3)
+        new_graph.AddEdge(2, 4)
+        new_graph.AddEdge(2, 5)
+        new_graph.AddEdge(4, 6)
+        new_graph.AddEdge(5, 6)
+        new_graph.AddEdge(5, 7)
+        new_graph.AddEdge(6, 7)
+        new_graph.AddEdge(6, 8)
+        new_graph.AddEdge(8, 9)
+
+        weak_vertex_indexes = []
+        for vertex in new_graph.WeakVertices():
+            weak_vertex_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(weak_vertex_indexes, [3, 8, 9])
+
+    def test_find_weak_nodex_empty_graph(self):
+        new_graph = SimpleGraph(10)
+
+        weak_vertex_indexes = []
+        for vertex in new_graph.WeakVertices():
+            weak_vertex_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(weak_vertex_indexes, [])
+
+    def test_find_weak_nodex_two_triangle(self):
+        new_graph = SimpleGraph(4)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 1)
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 2)
+        new_graph.AddEdge(1, 3)
+        new_graph.AddEdge(2, 3)
+
+        weak_vertex_indexes = []
+        for vertex in new_graph.WeakVertices():
+            weak_vertex_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(weak_vertex_indexes, [])
+
+    def test_find_weak_nodex_square(self):
+        new_graph = SimpleGraph(4)
+
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+        new_graph.AddVertex(randint(0, 100))
+
+        new_graph.AddEdge(0, 1)
+        new_graph.AddEdge(0, 2)
+        new_graph.AddEdge(1, 3)
+        new_graph.AddEdge(2, 3)
+
+        weak_vertex_indexes = []
+        for vertex in new_graph.WeakVertices():
+            weak_vertex_indexes.append(new_graph.vertex.index(vertex))
+        self.assertEqual(weak_vertex_indexes, [0, 1, 2, 3])
+
+    def tearDown(self):
+        pass
+
+
+unittest.main()
