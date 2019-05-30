@@ -194,16 +194,25 @@ class BST:
     def DeepAllNodes(self, order):
         result = []
         if order == 0:
-            pass
+            def in_order(node):
+                nonlocal result
+                if node:
+                    if node.LeftChild:
+                        in_order(node.LeftChild)
+                    result.append(node)
+                    if node.RightChild:
+                        in_order(node.RightChild)
+            in_order(self.Root)
         elif order == 1:
-            while len(stack) > 0:
-                node = stack.pop()
-                result.append(node)
-                if node.LeftChild:
-                    stack.append(node.LeftChild)
-                if node.RightChild:
-                    stack.append(node.RightChild)
-            return tuple(result)
+             def post_order(node):
+                nonlocal result
+                if node:
+                    if node.LeftChild:
+                        post_order(node.LeftChild)
+                    if node.RightChild:
+                        post_order(node.RightChild)
+                    result.append(node)
+             post_order(self.Root)
         elif order == 2:
             stack = [self.Root]
             while len(stack) > 0:
