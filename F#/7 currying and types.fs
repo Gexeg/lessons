@@ -1,5 +1,5 @@
 // 20.3.1
-let vat x n =
+let vat n x =
   float x * (1.0 + (float n /100.0))
 
 // 20.3.2
