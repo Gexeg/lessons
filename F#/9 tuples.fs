@@ -33,7 +33,7 @@ let (.+) x y =
 let (.*) x y = 
   let a, b = x
   let c, d = y
-  let mult = (a*c - b*d, a*c + b*d)
+  let mult = (a*c - b*d, b*c + a*d)
   mult
 
 let (.-) x y = 
