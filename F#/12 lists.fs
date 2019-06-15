@@ -16,7 +16,7 @@ let rec dnto n =
 
 
 // 34.3
-let rec even n = 
+let rec evenn n = 
     let rec build_list = function
         | (q,k,n_list, j) when j = q -> n_list 
         | (q,k,n_list, j) -> build_list(q,k+2,k::n_list, j+1)
