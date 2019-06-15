@@ -21,5 +21,5 @@ let rec evenn n =
         | (q,k,n_list, j) when j = q -> n_list 
         | (q,k,n_list, j) -> build_list(q,k+2,k::n_list, j+1)
         | (_,_,_,_) -> []
-    build_list (n, 2, [], 0)
+    build_list (n, 0, [], 0)
 
