@@ -50,8 +50,8 @@ let rec intersect (xs1, xs2) =
       let head::tail = xs1
       in_list(head,xs2) @ intersect(tail, xs2)
 
-printfn " "
-printfn "%A" ( intersect([1;5;6], [1;1;2;3]) )
+//printfn " "
+//printfn "%A" ( intersect([1;5;6], [1;1;2;3]) )
  
 // 40.2.4
 let rec plus (xs1, xs2) = 
