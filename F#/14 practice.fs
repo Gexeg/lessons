@@ -44,14 +44,14 @@ let rec intersect (xs1, xs2) =
     | (xs1, xs2) -> 
       let rec in_list (element, list) =
         match (element, list) with
-          | (element, head::list) when element = head -> element :: in_list(element,list) 
+          | (element, head::list) when element = head -> [element] 
           | (element, head::list) -> in_list(element,list)
           | _ -> []
       let head::tail = xs1
       in_list(head,xs2) @ intersect(tail, xs2)
 
 //printfn " "
-//printfn "%A" ( intersect([1;5;6], [1;1;2;3]) )
+//printfn "Пересечение %A" ( intersect([1;5;6], [1;1;2;3]) )
  
 // 40.2.4
 let rec plus (xs1, xs2) = 
@@ -80,13 +80,13 @@ let rec minus (xs1, xs2) =
 
 // 40.3.1
 let rec smallest = function
-  | [] -> 0
-  | [x] -> x
+  | [] -> None
+  | [x] -> Some x
   | head1::head2::tail when head1 < head2 || head1 = head2 -> smallest(head1::tail)
   | head1::head2::tail when head1 > head2 -> smallest(head2::tail)
-  | _ -> 0
+  | _ -> None
 
-//printfn "наименьший элемент в списке %d" (smallest [5;6;8;11])
+//printfn "наименьший элемент в списке %d" (smallest [5;6;8;11] |> Option.get)
 
 // 40.3.2
 let rec delete (element, list) = 
@@ -102,9 +102,9 @@ let rec sort = function
   | [] -> []
   | x -> 
     let head = smallest(x)
-    [head] @ sort(delete(head, x))
+    [Option.get <| head] @ sort(delete(Option.get(head), x))
 
-//printfn "%A" (sort [5;2;12;13;4])
+//printfn "сортировка %A" (sort [5;2;12;13;4])
 
 // 40.4
 let rec revrev = function
