@@ -1,6 +1,6 @@
 // 42.3
 // Генерируем множество подмножеств длинной k из множества [1..n]
-let allSubsets n k =
+let rec allSubsets n k =
   let setN =  [1..n] 
   let rec subsets (main, subset, run) = 
     match main,subset,run with
