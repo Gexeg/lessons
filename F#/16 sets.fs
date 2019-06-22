@@ -13,4 +13,4 @@ let allSubsets (n,k) =
     | _ -> set []
   subsets (setN, [], 1)
 
-printfn "%A" (allSubsets (4, 2))
+//printfn "%A" (allSubsets (4, 2))
