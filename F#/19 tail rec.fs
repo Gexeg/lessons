@@ -1,15 +1,15 @@
 // 48.4.1
 //Элиминация хвостовой рекурсии
 //вариант с параметрами-аккумуляторами
-let fibo1 n n1 n2 = 
+let rec fibo1 n n1 n2 = 
   let rec fibonacci (k,k1,k2) = 
     match (k,k1,k2) with
     | (k,k1,k2) when k = 0 -> k1
     | (k,k1,k2) when k = 1 -> k2
     | (k,k1,k2)  -> fibonacci ((k-1),k2,(k1+k2))
-  fibonacci (n,n1,n2)
+  fibonacci (n,n2,n1)
 
-//printfn "%d" (fibo1 6 0 1)
+//printfn "%d" (fibo1 6 1 0)
 
 // 48.4.2 
 //Элиминация хвостовой рекурсии
