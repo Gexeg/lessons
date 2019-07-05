@@ -1,6 +1,6 @@
 // 49.5.1
 // Формируем последовательность четных чисел
-let even_seq = Seq.initInfinite (fun i -> i*2)
+let even_seq = Seq.initInfinite (fun i -> i*2 + 2)
 
 //printfn "%A" even_seq
 
