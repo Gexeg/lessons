@@ -19,11 +19,12 @@ abstract class BoundedStack<T>
     // capacity - опциональный параметр, если он не передан, используется значение по умолчанию = 32
 
     // команды:
-    // предусловие: в стеке есть свободный слот
+    // предусловие1: у стека установлено положительное максимальное количество элементов
+    // предусловие2: в стеке есть свободный слот
     // постусловие: в стек добавлено новое значение
     public void push(T value); 
 
-    // предусловие: стек не пустой
+    // предусловие: стек не пустой;
     // постусловие: из стека удалён верхний элемент
     public void pop(); 
 
@@ -67,11 +68,11 @@ class BoundedStack():
         self.__capacity = capacity
 
     def push(self, value: Any):
-        if self.size() == self.capacity():
+        if self.capacity() > 0 and self.size() < self.capacity():
+            self.__stack.append(value)
+            self.__push_status = self.PUSH_OK
+        else:
             self.__push_status = self.PUSH_ERR
-            return
-        self.__stack.append(value)
-        self.__push_status = self.PUSH_OK
 
     def pop(self):
         if self.size() == 0:
