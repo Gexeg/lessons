@@ -7,7 +7,7 @@ abstract class Queue<T>
 
     public const int GET_VALUE_NONE = 0; // get_value() ещё не вызывалась
     public const int GET_VALUE_OK = 1; // последняя get_value() отработала нормально
-    public const int GET_VALUE_ERR = 2; // в очереди отсутствуют занчения
+    public const int GET_VALUE_ERR = 2; // в очереди отсутствуют значения
 
 
     // КОНСТРУКТОР
