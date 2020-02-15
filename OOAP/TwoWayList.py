@@ -230,6 +230,7 @@ class ParentList():
         if self._cursor:
             if self.size() == 1:
                 self.clear()
+                self.status_remove = 1
                 return
             cursor = self._cursor 
             if self.is_head():
