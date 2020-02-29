@@ -25,16 +25,16 @@ abstract class NativeDictionary<T>
 
     // удалить значение из словаря по переданныму ключу
     // предусловие: значение присутствует в словаре
-    // постусловие: значение удалено из словарь
+    // постусловие: значение удалено из словаря
     public void remove(str key)
 
     // очистить словарь
-    // постусловие: словарь очищена
+    // постусловие: словарь очищен
     public void clear()
 
     // ЗАПРОС
     // ключ присутствует в словаре?
-    public bool in_table(str key)
+    public bool in_dict(str key)
 
     // получить значение по ключу
     // предусловие: ключ - строка
@@ -42,9 +42,9 @@ abstract class NativeDictionary<T>
     public T get_value(str key)
 
     // дополнительные статусы
-    public int put_status() // возвращаяет PUT_*
-    public int get_status() // возвращаяет PUT_*
-    public int remove_status() // возвращает REMOVE_* 
+    public int get_put_status() // возвращаяет PUT_*
+    public int get_get_value_status() // возвращаяет GET_*
+    public int get_remove_status() // возвращает REMOVE_* 
 '''
 
 class NativeDictionary():
@@ -85,7 +85,7 @@ class NativeDictionary():
         else:
             self.status_remove = self.REMOVE_ERR
 
-    def in_table(self, key):
+    def in_dict(self, key):
         return key in self.storage
 
     def get_value(self, key):

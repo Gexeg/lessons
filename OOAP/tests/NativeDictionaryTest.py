@@ -44,3 +44,10 @@ def test_remove():
     assert a.get_remove_status() == a.REMOVE_OK
     assert a.get_value('key') == 0
  
+def test_in_dict():
+    a = NativeDictionary()
+    assert a.in_dict('key') == False
+    a.put('value', 'key')
+    assert a.in_dict('key') == True
+    a.remove('key')
+    assert a.in_dict('key') == False
