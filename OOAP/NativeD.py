@@ -1,10 +1,6 @@
 '''
 abstract class NativeDictionary<T>
 
-    public const int PUT_NONE = 0; // put() ещё не вызывалась
-    public const int PUT_OK = 1;   // последняя put() отработала нормально
-    public const int PUT_ERR = 2;  // передан некорректный ключ
-
     public const int GET_NONE = 0; // get() ещё не вызывалась
     public const int GET_OK = 1;   // последняя get() отработала нормально
     public const int GET_ERR = 2;  // передан некорректный ключ
@@ -19,7 +15,6 @@ abstract class NativeDictionary<T>
 
     // КОМАНДА
     // поместить значение в словарь под переданным ключом
-    // предусловие: ключ - строка
     // постусловие: значение помещено в словарь под переданным ключом
     public void put(T value, str key)
 
@@ -37,12 +32,10 @@ abstract class NativeDictionary<T>
     public bool in_dict(str key)
 
     // получить значение по ключу
-    // предусловие: ключ - строка
     // предусловие: ключ присутствует в словаре
     public T get_value(str key)
 
     // дополнительные статусы
-    public int get_put_status() // возвращаяет PUT_*
     public int get_get_value_status() // возвращаяет GET_*
     public int get_remove_status() // возвращает REMOVE_* 
 '''
@@ -72,14 +65,10 @@ class NativeDictionary():
         self.status_remove = self.REMOVE_NONE
 
     def put(self, value, key):
-        if isinstance(key, str):
-            self.storage[key] = value
-            self.status_put = self.PUT_OK
-        else:
-            self.status_put = self.PUT_ERR
+        self.storage[key] = value
 
     def remove(self, key):
-        if isinstance(key, str) and key in self.storage:
+        if key in self.storage:
             self.storage.pop(key)
             self.status_remove = self.REMOVE_OK
         else:
@@ -95,9 +84,6 @@ class NativeDictionary():
         else:
             self.status_get_value = self.GET_ERR
             return 0
-
-    def get_put_status(self):
-        return self.status_put
 
     def get_get_value_status(self):
         return self.status_get_value
