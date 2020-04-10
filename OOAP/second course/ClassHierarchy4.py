@@ -275,6 +275,10 @@ class General(object):
         return self.__class__
 
 
+class Any(General):
+    pass
+
+
 # В Python класс уже является типом, для проверки его объектов. Поэтому можно ничего не переписывать
 # если мы рассчитываем стандартные проверки isinstance(). Если хотим мимикрировать под другой класс, то
 # есть методы __instancecheck__ и __subclasscheck__, которые можно переопределить в метаклассе.
@@ -317,6 +321,6 @@ class Anc():
         print('I working!')
 
 
-class Child(Anc, metaclass=MetaMethod):
-    def test_method(self):
-        print('I know better!')
+# class Child(Anc, metaclass=MetaMethod):
+#     def test_method(self):
+#         print('I know better!')
