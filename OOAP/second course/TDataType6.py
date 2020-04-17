@@ -12,78 +12,38 @@ from HierarchyClojure5 import Void
 from typing import TypeVar, Generic, List
 
 
-class Vector(General):
+# В классе Any у нас не было реализовано метода сложения, чтобы не дублировать код из предыдущего упражнения
+# создам здесь потомка с новым методом.
+class Any2(Any):
+    def __add__(self, other):
+        """ Сложение.
+     
+        >>> a = Any2()
+        >>> a.value = 3
+        >>> b = Any2()
+        >>> b.value = 5
+        >>> (a + b).value
+        8
+        
+        """
+        if isinstance(other, Any2):
+            sum = self.value + other.value
+            result = Any2()
+            result.value = sum
+            return result
+        else:
+            return Void
 
-    def __init__(self, storage: List[Any] = None):
+
+class Vector():
+
+    def __init__(self, storage= None):
         """ Конструктор класса.
-
-        Чтобы реализовать сложение, нам нужно как-то и где-то хранить данные, поэтому тип value
-        переопределяем на список. Так же нужно будет переопределить методы сравнения.
         
         :param storage: Список элементов для хранилища, defaults to None
         :type storage: List[Any], optional
         """
-        self.storage: List[Any] = storage or []
-
-    def __lt__(self, other) -> bool:
-        """ Сравнение объекта с другим объектом `<`.
-        
-        >>> first = Vector([1,2])
-        >>> two = Vector([2])
-        >>> first < two
-        True
-        
-        :param other: другой объект
-        :type other: Vector
-        :return: текущий объект меньше переданного
-        :rtype: bool
-        """
-        return self.storage < other.storage
-
-    def __gt__(self, other) -> bool:
-        """ Сравнение объекта с другим объектом `>`.
-
-        >>> first = Vector([1,2])
-        >>> two = Vector([2])
-        >>> first > two
-        False
-
-        :param other: другой объект
-        :type other: Vector
-        :return: текущий объект меньше переданного
-        :rtype: bool
-        """
-        return self.storage > other.storage
-
-    def __le__(self, other) -> bool:
-        """ Сравнение объекта с другим объектом `<=`.
-        
-        >>> first = Vector([2])
-        >>> two = Vector([2])
-        >>> first <= two
-        True
-        
-        :param other: другой объект
-        :type other: Vector
-        :return: текущий объект меньше переданного
-        :rtype: bool
-        """
-        return self.storage <= other.storage
-
-    def __ge__(self, other) -> bool:
-        """ Сравнение объекта с другим объектом `>=`.
-        
-        >>> first = Vector([2])
-        >>> two = Vector([2])
-        >>> first >= two
-        True
-        
-        :param other: другой объект
-        :type other: General
-        :return: текущий объект меньше переданного
-        :rtype: bool
-        """
-        return self.storage >= other.storage
+        self.storage = storage or []
     
     def size(self):
         return len(self.storage)
@@ -91,6 +51,7 @@ class Vector(General):
     def __add__(self, other):
         """ Сложение 2 объектов.
         
+        Для наглядности большая часть примеров со стандартными типами.
         >>> a = Vector([1, 2])
         >>> b = Vector([3, 4])
         >>> c = a + b
@@ -113,6 +74,20 @@ class Vector(General):
         >>> sum = c + b
         >>> sum.storage[0].storage[0].storage[0].storage
         [2, 'strstr']
+
+        А вот пример с нашим кастомным Any, наследником General
+        Получаем 2 значения Any2 типа, с атрибутами value = 6, 10
+        >>> a = Any2()
+        >>> a.value = 3
+        >>> b = Any2()
+        >>> b.value = 5
+        >>> c = Vector([a, b])
+        >>> d = c
+        >>> k = c + d
+        >>> k.storage[0].value
+        6
+        >>> k.storage[1].value
+        10
 
         :param other: другой объект
         :type other: Vector
