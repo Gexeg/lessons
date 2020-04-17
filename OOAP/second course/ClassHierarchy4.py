@@ -29,13 +29,13 @@ class General(object):
         Its not a serialized General
 
         :param attrs: словарь атрибутов в виде строки
-        :type atrs: str
+        :type attrs: str
         """
         try:
-            attrs = json.loads(attrs)
-            attrs.pop(cls.__name__)
+            des_attrs = json.loads(attrs)
+            des_attrs.pop(cls.__name__)
             new_one = cls()
-            for attr, val in attrs.items():
+            for attr, val in des_attrs.items():
                 setattr(new_one, attr, val)
             return new_one
         except JSONDecodeError:
