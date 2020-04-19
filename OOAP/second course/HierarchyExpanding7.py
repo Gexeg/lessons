@@ -5,26 +5,86 @@
 """
 
 
+# У нас есть классы отвечающий за приготовление хлеба и булочек и хлебопечка, которая их задействует.
 class Bread():
-    time_to_bake_min = 10
-    temperature = 150
+    def __init__(self):
+        # Изначально идея была в том, что атрибуты хранящие рецепт хлеба не будут меняться и будут одинаковы для
+        # всех экземпляров класса Bread, поэтому поместил их в атрибуты класса а не экземпляра. 
+        self.time_to_bake_min = 10
+        self.temperature = 180
+        self.dough_ingridients = ['eggs', 'flour']
 
-    def get_baking_settings(self):
-        return self.time_to_bake_min, self.temperature
+    def make_the_dough(self):
+        self._mix_ingridients()
+        self._get_dough()
+
+    def _mix_ingridients(self):
+        for ing in self.dough_ingridients:
+            print(f'{ing} added')
+
+    def _get_dough(self):
+        print('What a strange dough!')
+
+    def make_bread(self):
+        self._bake()
+        self._get_bread()
+
+    def _bake(self):
+        print(f'Baked {self.time_to_bake_min} min on {self.temperature}C')
+
+    def _get_bread(self):
+        print(f'What a wonderful bread!')
 
 
-# Предположим у нас есть хлебопечка, которая в зависимости от класса хлеба должна выставлять таймер и температуру
-# Мы могли бы сделать атрибут bread_type и хранить всю информацию о настройках в печке в словаре, например.
-# Можем решить этот вопрос наследованием. Тогда печка будет просто получать необходимые настройки от наследников.
+class BurntBun(Bread):
+    def __init__(self):
+        self.time_to_bake_min = 15
+        self.temperature = 200
+        self.dough_ingridients = ['eggs', 'flour', 'sugar']
 
-class BurntBread(Bread):
-    time_to_bake_min = 15
-    temperature = 200
+    def _get_dough(self):
+        print('Tasty dough, will we bake buns?')
+
+    def _get_bread(self):
+        print(f'We got a burnt buns! Not good!')
 
 
-class HalfBakedBread(Bread):
-    time_to_bake_min = 5
-    temperature = 100
+# Предположим у нас есть хлебопечка, которая в зависимости от класса хлеба должна выпекать хлеб.
+# Мы могли бы сделать атрибут bread_type и хранить всю информацию о настройках в печке в словаре, например. Но
+# это привело бы к конфликтам в таксономии.
+class BreadMachine():
+    """ Примеры использования класса.
+
+    >>> a = BreadMachine()
+    >>> bread = Bread()
+    >>> a.set_prepack(bread)
+    >>> a.make_bread()
+    eggs added
+    flour added
+    What a strange dough!
+    Baked 10 min on 180C
+    What a wonderful bread!
+    
+    >>> bun = BurntBun()
+    >>> a.set_prepack(bun)
+    >>> a.make_bread()
+    eggs added
+    flour added
+    sugar added
+    Tasty dough, will we bake buns?
+    Baked 15 min on 200C
+    We got a burnt buns! Not good!
+    """
+    
+    def __init__(self):
+        self._bread = None
+
+    def set_prepack(self, prepack):
+        self._bread = prepack
+
+    def make_bread(self):
+        self._bread.make_the_dough()
+        self._bread.make_bread()
 
 
 """
