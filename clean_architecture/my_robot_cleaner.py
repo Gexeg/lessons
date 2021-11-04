@@ -54,7 +54,7 @@ class RobotCleaner:
                 current point - (x={self._x}, y={self._y})
                 current angle - {self._angle}
                 current mode - {self._mode}
-                current status - {self._status}
+                current status - {self._status.title}
             """
         )
 
