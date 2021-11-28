@@ -1,6 +1,6 @@
 import json
 from dataclasses import asdict
-from pure_robot import get_cleaner_maker, RobotState
+from pure_robot import get_maker, RobotState
 
 # вынес хранилище, обработку данных в отдельные зависимости.
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         'move 50',
         'stop'
     ]
-    cleaner_api = ClientApi(CLEANERS_STORAGE, get_cleaner_maker())
+    cleaner_api = ClientApi(CLEANERS_STORAGE, get_maker())
     print(cleaner_api.handle_cleaner_command_list(commands, "1"))
     print(cleaner_api.get_state("1"))
 
