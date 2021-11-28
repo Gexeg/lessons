@@ -86,3 +86,9 @@ def make(transfer,code,state):
         elif cmd[0]=='stop':
             state = stop(transfer,state)
     return state
+
+def get_cleaner_maker():
+    transfer = transfer_to_cleaner
+    def maker(code, state):
+        return make(transfer, code, state)
+    return maker
