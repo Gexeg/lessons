@@ -3,6 +3,22 @@ from typing import List, Optional
 from dataclasses import dataclass
 from collections import namedtuple
 
+# 10 functional DI
+# Как-то максимально сложно идет. Вроде у нас все возможные зависимости уже вынесены вне функциq. Единственное, что
+# придумал, это вынесение `transfer` для получения команд предназначенных под конкретный тип роботов и дальнейшее их использование.
+
+
+def get_maker(transfer=transfer_to_cleaner):
+    def maker(code, state):
+        return make(transfer, code, state)
+    return maker
+
+def get_mover(transfer=transfer_to_cleaner):
+    def mover(dist,state):
+        return move(transfer, dist, state)
+    return mover
+
+
 
 @dataclass
 class RobotState:
@@ -86,9 +102,3 @@ def make(transfer,code,state):
         elif cmd[0]=='stop':
             state = stop(transfer,state)
     return state
-
-def get_cleaner_maker():
-    transfer = transfer_to_cleaner
-    def maker(code, state):
-        return make(transfer, code, state)
-    return maker
